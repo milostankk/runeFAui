@@ -65,6 +65,10 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { DataDisplayComponent } from './views/data-display/data-display.component';
+import {ChartModule} from 'angular2-highcharts';
+import {DataService} from './data.service';
+
 
 @NgModule({
   imports: [
@@ -74,14 +78,16 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
+      ChartModule.forRoot(require('highcharts'))
   ],
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
     ...APP_COMPONENTS,
-    ...APP_DIRECTIVES
+    ...APP_DIRECTIVES,
+    DataDisplayComponent,
   ],
-  providers: [{
+  providers: [DataService,{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   }],

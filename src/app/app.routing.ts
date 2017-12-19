@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {DataDisplayComponent} from './views/data-display/data-display.component';
 
 // Import Containers
 import {
@@ -23,7 +24,11 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: './views/dashboard/dashboard.module#DashboardModule'
-      }
+      },
+        {
+            path: 'dataDisplay',
+            component: DataDisplayComponent
+        }
     ]
   }
 ];

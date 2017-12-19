@@ -6,6 +6,8 @@ import {DashboardRoutingModule} from './dashboard-routing.module';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {GroupService} from '../../group.service';
+import {DataService} from '../../data.service';
+import {ChartModule} from 'angular2-highcharts';
 
 @NgModule({
     imports: [
@@ -13,10 +15,11 @@ import {GroupService} from '../../group.service';
         ChartsModule,
         NgbModule.forRoot(),
         CommonModule,
-        FormsModule
+        FormsModule,
+        ChartModule.forRoot(require('highcharts'))
     ],
     declarations: [DashboardComponent],
-    providers: [GroupService]
+    providers: [GroupService, DataService]
 })
 export class DashboardModule {
 }
