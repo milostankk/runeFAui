@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {GroupService} from '../../group.service';
 import {DataService} from '../../data.service';
 import {ChartModule} from 'angular2-highcharts';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import {ChartModule} from 'angular2-highcharts';
         NgbModule.forRoot(),
         CommonModule,
         FormsModule,
-        ChartModule.forRoot(require('highcharts'))
+        ChartModule.forRoot(require('highcharts')),
+        HttpClientModule
     ],
     declarations: [DashboardComponent],
     providers: [GroupService, DataService]

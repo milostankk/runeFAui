@@ -14,11 +14,17 @@
 
   <div class="row">
     <table class="table table-striped">
-      <th>Date</th>
-      <th>Value</th>
-      <tr *ngFor="let res of array">
-        <td>{{res.date | date: 'yyyy-MM-dd HH:mm' : 'utc'}}</td>
-        <td>{{res.value}}</td>
+      <th><button class="btn btn-primary">Ticker</button></th>
+      <th><button class="btn btn-primary">Relative Strength</button></th>
+      <th><button class="btn btn-primary">Offensive Strength</button></th>
+      <th><button class="btn btn-primary">Defensive Strength</button></th>
+      <th><button class="btn btn-primary">Close Price</button></th>
+      <tr *ngFor="let sym of symbolGrid">
+       <td>{{sym.Ticker}}</td>
+        <td>{{sym.RelativeStrength}}</td>
+        <td>{{sym.OffensiveStrength}}</td>
+        <td>{{sym.DefensiveStrength}}</td>
+        <td>{{sym.ClosePrice}}</td>
       </tr>
     </table>
   </div>

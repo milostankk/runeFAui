@@ -3,6 +3,7 @@ import {DataService} from '../../data.service';
 import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
 import * as HighchartsOfflineExporting from 'highcharts-export-csv';
+import {SymbolDp} from "../../symbolDp";
 
 
 HighChartsExporting(Highcharts);
@@ -16,15 +17,17 @@ HighchartsOfflineExporting(Highcharts);
 export class DataDisplayComponent implements OnInit {
 
     options: Object;
-    result: any[];
+    rss: SymbolDp[];
+    symbolGrid: object[];
     array: any[];
+    processed_json: any[];
 
     constructor(private dataService: DataService) {
-        this.dataService.getData().subscribe(res => this.result = res);
-        this.array = this.result;
+        this.dataService.getRss().subscribe(res => this.rss = res);
+        this.dataService.getSymbolGrid().subscribe(sym => this.symbolGrid = sym);
+        this.array = this.rss;
         Highcharts.dateFormat('Month: %m Day: %d Year: %Y', 20, false);
         const exportFormats = Highcharts.getOptions().exporting.buttons.contextButton.menuItems;
-        exportFormats.splice(2, 2);
         exportFormats.pop();
     }
 
@@ -43,37 +46,26 @@ export class DataDisplayComponent implements OnInit {
                     condition: {
                         maxWidth: 800
                     },
-                    chartOptions: {
-                        legend: {
-                            enabled: false
-                        }
-                    }
                 }]
             },
             title: {text: 'Awesome Chart'},
             series: [{
-                showInLegend: false,
-                name: 'point',
-                data: this.result.map(function (point) {
-                    return [point.date, point.value];
+                showInLegend: true,
+                name: this.rss[0].Quantities[0].Type,
+                data: this.rss.map(function (point) {
+                    return [Date.parse(point.Date), point.Quantities[0]['Value']]
                 }),
-                pointInterval: 24 * 3600 * 1000,
             }],
             xAxis: {
                 type: 'datetime',
-                startOnTick: true,
-                minTickInterval: 20000,
-                tickPositioner: function (min, max) {
-                    const ticks = this.series[0].processedXData.slice();
-                    ticks.info = this.tickPositions.info;
-                    return ticks;
+                ordinal: false,
+                labels: {
+                    format: '{value:%Y-%b-%e}'
                 },
-                minPadding: 0.015,
                 dateTimeLabelFormats: {
                     minute: '%H:%M',
                     hour: '%H:%M',
                     day: '%e. %b',
-                    week: '%e. %b',
                     month: '%b \'%y',
                     year: '%Y'
                 }

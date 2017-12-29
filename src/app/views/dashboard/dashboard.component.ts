@@ -10,26 +10,34 @@ import {Group} from '../../group';
 })
 export class DashboardComponent implements OnInit {
 
-    groups: GroupViewModel[];
-    groupContent: string[];
+   // groups: GroupViewModel[];
+   //  groupContent: string[];
     subgroups: GroupViewModel[];
     date;
     minDate;
     dropDownSelection: string;
     group: Group;
     groupContainer: GroupContainer;
+    groups = ['All', 'Index', 'Sector', 'Symbol'];
+    grouping = [];
+    subgrouping = [];
+
+
+    content: string[];
+
 
     constructor(private groupService: GroupService, private router: Router) {
     }
 
     groupClicked(e) {
+        this.content = null;
         this.groupContainer = new GroupContainer();
         this.groupContainer.group = new Group();
-        this.groupContainer.group.name = e.name;
-        this.groupContent = e.values;
-        const index = this.getGroupIndex(e.name);
-        this.setSubgroups(index);
-        if (e.values.length < 1) {
+        this.groupContainer.group.name = e;
+        this.setContext(e);
+        const index = this.getGroupIndex(e);
+        this.setSubgrouping(index);
+        if (e === 'All') {
             this.groupContainer.subgroup = new Group();
         }
         this.dropDownSelection = 'Select';
@@ -42,7 +50,7 @@ export class DashboardComponent implements OnInit {
     }
 
     subgroupClicked(e) {
-        this.groupContainer.subgroup.name = e.name;
+        this.groupContainer.subgroup.name = e;
     }
 
     dateFromChanged(e) {
@@ -56,26 +64,42 @@ export class DashboardComponent implements OnInit {
 
     groupsSelectionDone(e) {
         console.log(this.groupContainer);
-        this.router.navigate(['../dataDisplay']);
+         this.router.navigate(['../dataDisplay']);
+      //   this.location.replace('../dataDisplay');
     }
 
     getGroupIndex(group: string): number {
-        return this.groups.map(function (x) {
-            return x.name;
+        return this.grouping.map(function (x) {
+            return x;
         }).indexOf(group);
     }
 
-    setGroups(): void {
+   /* setGroups(): void {
         this.groupService.getGroups().subscribe(groups => this.groups = groups.slice(0, groups.length - 1));
-    }
+    }*/
+
+   setGroupings(): void {
+       this.grouping = this.groups.slice(0, this.groups.length - 1);
+   }
+
+   setSubgrouping(index: number): void{
+       this.subgrouping = this.groups.slice(index + 1, this.groups.length)
+   }
 
     setSubgroups(index: number): void {
         this.groupService.getGroups().subscribe(groups => this.subgroups = groups.slice(index + 1, groups.length));
     }
 
+    setContext(group: string): void {
+        if (group === 'Index') {
+            this.groupService.getIndicies().subscribe(content => this.content = content);
+        } else if (group === 'Sector') {
+            this.groupService.getSectors().subscribe(content => this.content = content);
+        } else { return; }
+    }
 
     ngOnInit() {
-        this.setGroups();
+        this.setGroupings();
     }
 
 }
