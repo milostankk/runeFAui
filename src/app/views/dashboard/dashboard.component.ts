@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
     groups = ['All', 'Index', 'Sector', 'Symbol'];
     grouping = [];
     subgrouping = [];
-    dataReady = true;
+    dataReady = false;
     // NEW CODE
     selectedGroup = '';
     selectedFromDate: string;
