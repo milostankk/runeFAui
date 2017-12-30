@@ -1,32 +1,51 @@
 <div class="animated fadeIn">
 
-  <div class="row">
-    <div class="col-12">
-      <chart id="chart" style="width: 100% !important; display: block" [options]="options"></chart>
+    <div class="row">
+        <div class="col-12">
+            <chart id="chart" style="width: 100% !important; display: block" [options]="options"></chart>
+        </div>
     </div>
-  </div>
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <chart id="chart1" style="width: 100% !important; display: block" [options]="options1"></chart>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <chart id="chart2" style="width: 100% !important; display: block" [options]="options2"></chart>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
 
-  <br>
-
-
-  <br>
-  <br>
-
-  <div class="row">
-    <table class="table table-striped">
-      <th><button class="btn btn-primary">Ticker</button></th>
-      <th><button class="btn btn-primary">Relative Strength</button></th>
-      <th><button class="btn btn-primary">Offensive Strength</button></th>
-      <th><button class="btn btn-primary">Defensive Strength</button></th>
-      <th><button class="btn btn-primary">Close Price</button></th>
-      <tr *ngFor="let sym of symbolGrid">
-       <td>{{sym.Ticker}}</td>
-        <td>{{sym.RelativeStrength}}</td>
-        <td>{{sym.OffensiveStrength}}</td>
-        <td>{{sym.DefensiveStrength}}</td>
-        <td>{{sym.ClosePrice}}</td>
-      </tr>
-    </table>
-  </div>
+    <div class="row">
+        <table class="table table-striped">
+            <th>
+                <button class="btn btn-primary">Ticker</button>
+            </th>
+            <th>
+                <button class="btn btn-primary">Relative Strength</button>
+            </th>
+            <th>
+                <button class="btn btn-primary">Offensive Strength</button>
+            </th>
+            <th>
+                <button class="btn btn-primary">Defensive Strength</button>
+            </th>
+            <th>
+                <button class="btn btn-primary">Close Price</button>
+            </th>
+            <tr *ngFor="let sym of symbolGrid">
+                <td>{{sym.Ticker}}</td>
+                <td>{{sym.RelativeStrength}}</td>
+                <td>{{sym.OffensiveStrength}}</td>
+                <td>{{sym.DefensiveStrength}}</td>
+                <td>{{sym.ClosePrice}}</td>
+            </tr>
+        </table>
+    </div>
 
 </div>

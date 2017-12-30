@@ -16,23 +16,54 @@ export class DashboardComponent implements OnInit {
     subgroups: GroupViewModel[];
     date;
     minDate;
-    dropDownSelection: string;
+    dropDownSelection = 'Select';
     group: Group;
     groupContainer: GroupContainer;
     groups = ['All', 'Index', 'Sector', 'Symbol'];
     grouping = [];
     subgrouping = [];
     dataReady = true;
-    selectedGroup: string;
+    // NEW CODE
+    selectedGroup = '';
     selectedFromDate: string;
     selectedToDate: string;
-
+    // NEW CODE ENDED
 
     content: string[];
 
 
     constructor(private groupService: GroupService, private dataService: DataService, private router: Router) {
     }
+
+    // NEW CODE
+    selectGroup(gName) {
+        this.setContext(gName);
+        this.selectedGroup = gName;
+        this.dropDownSelection = 'Select';
+    }
+    showDates(): boolean {
+        return this.selectedGroup ? !(this.selectedGroup === 'Index' || this.selectedGroup === 'Sector') : false;
+    }
+
+    selectDateFrom(e) {
+        this.selectedFromDate = new Date(e.year, e.month - 1, e.day).toISOString();
+        this.minDate = e;
+    }
+
+    selectDateTo(e) {
+        this.selectedToDate = new Date(e.year, e.month - 1, e.day).toISOString();
+    }
+
+    post() {
+        this.router.navigateByUrl('/dataDisplay');
+        sessionStorage.setItem('super', this.selectedGroup);
+        if (this.selectedFromDate) {sessionStorage.setItem('from', this.selectedFromDate)}
+        if (this.selectedToDate) {sessionStorage.setItem('to', this.selectedToDate)}
+    }
+
+
+
+    // NEW CODE ENDED
 
     groupClicked(e) {
         this.content = null;
@@ -75,7 +106,6 @@ export class DashboardComponent implements OnInit {
          sessionStorage.setItem('super', this.selectedGroup);
         if (this.groupContainer.dateFrom) {sessionStorage.setItem('from', this.groupContainer.dateFrom.toISOString())}
         if (this.groupContainer.dateTo) {sessionStorage.setItem('to', this.groupContainer.dateTo.toISOString())}
-      //   this.dataService.getRss(this.groupContainer.)
     }
 
     getGroupIndex(group: string): number {
@@ -96,7 +126,7 @@ export class DashboardComponent implements OnInit {
        this.grouping = this.groups.slice(0, this.groups.length - 1);
    }
 
-   setSubgrouping(index: number): void{
+   setSubgrouping(index: number): void {
        this.subgrouping = this.groups.slice(index + 1, this.groups.length)
    }
 
@@ -114,7 +144,7 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
        sessionStorage.clear();
-       // this.isDataReady();
+        this.isDataReady();
         this.setGroupings();
     }
 

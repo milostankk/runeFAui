@@ -1,3 +1,4 @@
+/*
 
 import {GroupViewModel} from './groupViewModel';
 import {SymbolDp} from './symbolDp';
@@ -6,7 +7,7 @@ import {Quantities} from './quantities';
 export const mockGroups: GroupViewModel[] = [
     { name: 'All', values: [] },
     { name: 'Index', values: []},
-    { name: 'Sector', values: [/*'Banking', 'Biotech', 'Automotive'*/]},
+    { name: 'Sector', values: [/!*'Banking', 'Biotech', 'Automotive'*!/]},
     {name: 'Symbol', values: []}
 ];
 
@@ -10019,3 +10020,4 @@ export const mockData: any[] = [
     {date: Date.UTC(2017, 11, 28), value: 0.22},
     {date: Date.UTC(2017, 11, 29), value: 0.87}
 ];
+*/
