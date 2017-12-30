@@ -9,7 +9,7 @@ import {HttpClient} from '@angular/common/http';
 export class GroupService {
 
 
-    rootUrl = 'http://localhost:64002/api';
+    rootUrl = 'http://localhost/RuneFa.JanusWebApiServer/api';
 
     constructor(private http: HttpClient) {
     }
@@ -17,17 +17,29 @@ export class GroupService {
     getGroups(): Observable<GroupViewModel[]> {
         return of(mockGroups);
     }
+    //
+    // getIndicies(): Observable<string[]> {
+    //     return of(mockIndicies);
+    // }
 
-    getIndicies(): Observable<string[]> {
-        return of(mockIndicies);
+
+    // getSectors(): Observable<string[]> {
+    //     return of(mockSectors);
+    // }
+
+    // Checking if data is ready for displaying
+
+    isDataReady(): Observable<any> {
+        return this.http.get(this.rootUrl + '/IsDataReady');
     }
 
+    getIndices(): Observable<string[]> {
+        return this.http.get<string[]>(this.rootUrl.concat('/GetIndexNames'));
+    }
 
     getSectors(): Observable<string[]> {
-        return of(mockSectors);
+        return this.http.get<string[]>(this.rootUrl.concat('/GetSectorNames'));
     }
 
-   /* getIndices(): Observable<string[]> {
-        return this.http.get<string[]>(this.rootUrl.concat('/GetIndexNames'));
-    }*/
+
 }

@@ -68,11 +68,13 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { DataDisplayComponent } from './views/data-display/data-display.component';
 import {ChartModule} from 'angular2-highcharts';
 import {DataService} from './data.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
   imports: [
     BrowserModule,
+      HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     BsDropdownModule.forRoot(),

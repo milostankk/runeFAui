@@ -17,8 +17,7 @@ import {HttpClientModule} from '@angular/common/http';
         NgbModule.forRoot(),
         CommonModule,
         FormsModule,
-        ChartModule.forRoot(require('highcharts')),
-        HttpClientModule
+        ChartModule.forRoot(require('highcharts'))
     ],
     declarations: [DashboardComponent],
     providers: [GroupService, DataService]

@@ -4,6 +4,7 @@ import {GroupService} from '../../group.service';
 import {GroupViewModel} from '../../groupViewModel';
 import {GroupContainer} from '../../groupContainer';
 import {Group} from '../../group';
+import {DataService} from '../../data.service';
 
 @Component({
     templateUrl: 'dashboard.component.html'
@@ -21,12 +22,16 @@ export class DashboardComponent implements OnInit {
     groups = ['All', 'Index', 'Sector', 'Symbol'];
     grouping = [];
     subgrouping = [];
+    dataReady = true;
+    selectedGroup: string;
+    selectedFromDate: string;
+    selectedToDate: string;
 
 
     content: string[];
 
 
-    constructor(private groupService: GroupService, private router: Router) {
+    constructor(private groupService: GroupService, private dataService: DataService, private router: Router) {
     }
 
     groupClicked(e) {
@@ -34,6 +39,7 @@ export class DashboardComponent implements OnInit {
         this.groupContainer = new GroupContainer();
         this.groupContainer.group = new Group();
         this.groupContainer.group.name = e;
+        this.selectedGroup = e;
         this.setContext(e);
         const index = this.getGroupIndex(e);
         this.setSubgrouping(index);
@@ -47,6 +53,7 @@ export class DashboardComponent implements OnInit {
         this.groupContainer.group.content = e;
         this.groupContainer.subgroup = new Group();
         this.dropDownSelection = e;
+        this.selectedGroup = e;
     }
 
     subgroupClicked(e) {
@@ -65,13 +72,20 @@ export class DashboardComponent implements OnInit {
     groupsSelectionDone(e) {
         console.log(this.groupContainer);
          this.router.navigate(['../dataDisplay']);
-      //   this.location.replace('../dataDisplay');
+         sessionStorage.setItem('super', this.selectedGroup);
+        if (this.groupContainer.dateFrom) {sessionStorage.setItem('from', this.groupContainer.dateFrom.toISOString())}
+        if (this.groupContainer.dateTo) {sessionStorage.setItem('to', this.groupContainer.dateTo.toISOString())}
+      //   this.dataService.getRss(this.groupContainer.)
     }
 
     getGroupIndex(group: string): number {
         return this.grouping.map(function (x) {
             return x;
         }).indexOf(group);
+    }
+
+    isDataReady()  {
+        this.groupService.isDataReady().subscribe(data => this.dataReady = data, error2 => alert(error2))
     }
 
    /* setGroups(): void {
@@ -86,19 +100,21 @@ export class DashboardComponent implements OnInit {
        this.subgrouping = this.groups.slice(index + 1, this.groups.length)
    }
 
-    setSubgroups(index: number): void {
-        this.groupService.getGroups().subscribe(groups => this.subgroups = groups.slice(index + 1, groups.length));
-    }
+    // setSubgroups(index: number): void {
+    //     this.groupService.getGroups().subscribe(groups => this.subgroups = groups.slice(index + 1, groups.length));
+    // }
 
     setContext(group: string): void {
         if (group === 'Index') {
-            this.groupService.getIndicies().subscribe(content => this.content = content);
+            this.groupService.getIndices().subscribe(content => this.content = content);
         } else if (group === 'Sector') {
             this.groupService.getSectors().subscribe(content => this.content = content);
         } else { return; }
     }
 
     ngOnInit() {
+       sessionStorage.clear();
+       // this.isDataReady();
         this.setGroupings();
     }
 
