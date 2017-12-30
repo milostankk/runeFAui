@@ -21,8 +21,6 @@ export class DataDisplayComponent implements OnInit {
     options2: Object;
     rss;
     symbolGrid;
-    array: any[];
-    processed_json: any[];
     title;
     dateTitle;
 
@@ -77,8 +75,6 @@ export class DataDisplayComponent implements OnInit {
             }
         });
 
-
-
         this.dataService.getRss(sessionStorage.getItem('super'),
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res => {
             this.rss = res;
@@ -120,6 +116,7 @@ export class DataDisplayComponent implements OnInit {
                 }
             }
         });
+
         this.dataService.getDomDoe(sessionStorage.getItem('super'),
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res1 => {
             this.rss = res1;
@@ -176,8 +173,6 @@ export class DataDisplayComponent implements OnInit {
 
 
     ngOnInit() {
-
-
     }
 
 }

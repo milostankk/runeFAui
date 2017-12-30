@@ -7,6 +7,7 @@ import {
   FullLayoutComponent,
   SimpleLayoutComponent
 } from './containers';
+import {DataNotReadyComponent} from './views/data-not-ready/data-not-ready.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,10 @@ export const routes: Routes = [
         {
             path: 'dataDisplay',
             component: DataDisplayComponent
+        },
+        {
+            path: 'dataNotReady',
+            component: DataNotReadyComponent
         }
     ]
   }

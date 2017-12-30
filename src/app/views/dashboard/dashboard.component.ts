@@ -13,12 +13,12 @@ export class DashboardComponent implements OnInit {
 
    // groups: GroupViewModel[];
    //  groupContent: string[];
-    subgroups: GroupViewModel[];
+  //  subgroups: GroupViewModel[];
     date;
     minDate;
     dropDownSelection = 'Select';
-    group: Group;
-    groupContainer: GroupContainer;
+   // group: Group;
+   // groupContainer: GroupContainer;
     groups = ['All', 'Index', 'Sector', 'Symbol'];
     grouping = [];
     subgrouping = [];
@@ -36,6 +36,12 @@ export class DashboardComponent implements OnInit {
     }
 
     // NEW CODE
+    isDataReady()  {
+        this.groupService.isDataReady().subscribe(
+            data => {this.dataReady = data; if (!this.dataReady)  {
+                this.router.navigateByUrl('/dataNotReady');   }}, error2 => alert(error2.message))
+    }
+
     selectGroup(gName) {
         this.setContext(gName);
         this.selectedGroup = gName;
@@ -61,6 +67,27 @@ export class DashboardComponent implements OnInit {
         if (this.selectedToDate) {sessionStorage.setItem('to', this.selectedToDate)}
     }
 
+    setGroupings(): void {
+        this.grouping = this.groups.slice(0, this.groups.length - 1);
+    }
+
+    setSubgrouping(index: number): void {
+        this.subgrouping = this.groups.slice(index + 1, this.groups.length)
+    }
+
+    setContext(group: string): void {
+        if (group === 'Index') {
+            this.groupService.getIndices().subscribe(content => this.content = content);
+        } else if (group === 'Sector') {
+            this.groupService.getSectors().subscribe(content => this.content = content);
+        } else { return; }
+    }
+
+    ngOnInit() {
+        sessionStorage.clear();
+        this.isDataReady();
+        this.setGroupings();
+    }
 
 
     // NEW CODE ENDED
@@ -100,52 +127,30 @@ export class DashboardComponent implements OnInit {
     //     this.groupContainer.dateTo = new Date(e.year, e.month - 1, e.day);
     // }
 
-    groupsSelectionDone(e) {
-        console.log(this.groupContainer);
-         this.router.navigate(['../dataDisplay']);
-         sessionStorage.setItem('super', this.selectedGroup);
-        if (this.groupContainer.dateFrom) {sessionStorage.setItem('from', this.groupContainer.dateFrom.toISOString())}
-        if (this.groupContainer.dateTo) {sessionStorage.setItem('to', this.groupContainer.dateTo.toISOString())}
-    }
+    // groupsSelectionDone(e) {
+    //      this.router.navigate(['../dataDisplay']);
+    //      sessionStorage.setItem('super', this.selectedGroup);
+    //     if (this.groupContainer.dateFrom) {sessionStorage.setItem('from', this.groupContainer.dateFrom.toISOString())}
+    //     if (this.groupContainer.dateTo) {sessionStorage.setItem('to', this.groupContainer.dateTo.toISOString())}
+    // }
 
-    getGroupIndex(group: string): number {
-        return this.grouping.map(function (x) {
-            return x;
-        }).indexOf(group);
-    }
+    // getGroupIndex(group: string): number {
+    //     return this.grouping.map(function (x) {
+    //         return x;
+    //     }).indexOf(group);
+    // }
 
-    isDataReady()  {
-        this.groupService.isDataReady().subscribe(data => {this.dataReady = data; if (!this.dataReady) {alert('Data is being generated. Refresh the page in several minutes and try again.'); }}, error2 => alert(error2.message))
-    }
 
    /* setGroups(): void {
         this.groupService.getGroups().subscribe(groups => this.groups = groups.slice(0, groups.length - 1));
     }*/
 
-   setGroupings(): void {
-       this.grouping = this.groups.slice(0, this.groups.length - 1);
-   }
 
-   setSubgrouping(index: number): void {
-       this.subgrouping = this.groups.slice(index + 1, this.groups.length)
-   }
 
     // setSubgroups(index: number): void {
     //     this.groupService.getGroups().subscribe(groups => this.subgroups = groups.slice(index + 1, groups.length));
     // }
 
-    setContext(group: string): void {
-        if (group === 'Index') {
-            this.groupService.getIndices().subscribe(content => this.content = content);
-        } else if (group === 'Sector') {
-            this.groupService.getSectors().subscribe(content => this.content = content);
-        } else { return; }
-    }
 
-    ngOnInit() {
-       sessionStorage.clear();
-        this.isDataReady();
-        this.setGroupings();
-    }
 
 }

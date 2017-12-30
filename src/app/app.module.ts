@@ -69,6 +69,7 @@ import { DataDisplayComponent } from './views/data-display/data-display.componen
 import {ChartModule} from 'angular2-highcharts';
 import {DataService} from './data.service';
 import {HttpClientModule} from '@angular/common/http';
+import { DataNotReadyComponent } from './views/data-not-ready/data-not-ready.component';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import {HttpClientModule} from '@angular/common/http';
     ...APP_COMPONENTS,
     ...APP_DIRECTIVES,
     DataDisplayComponent,
+    DataNotReadyComponent,
   ],
   providers: [DataService,{
     provide: LocationStrategy,
