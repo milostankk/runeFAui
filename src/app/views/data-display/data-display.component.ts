@@ -25,6 +25,53 @@ export class DataDisplayComponent implements OnInit {
     processed_json: any[];
 
     constructor(private dataService: DataService) {
+        this.dataService.getRsStrongRsWeak(sessionStorage.getItem('super'),
+            sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res2 => {
+            this.rss = res2;
+            this.options2 = {
+                chart: {
+                    name: 'awesome',
+                    backgroundColor: '#F2F4F8',
+                    renderTo: 'chart2',
+                    zoomType: 'x'
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 800
+                        },
+                    }]
+                },
+                title: {text: 'RS Strong/Weak'},
+                series: [{
+                    showInLegend: true,
+                    name: 'RsStrong',
+                    data: this.rss.map(function (point) {
+                        return [Date.parse(point.Date), point.Quantities[0]['Value']]
+                    }),
+                }, {
+                    name: 'RsWeak',
+                    data: this.rss.map(function (point) {
+                        return [Date.parse(point.Date), point.Quantities[1]['Value']]
+                    })
+                }],
+                xAxis: {
+                    type: 'datetime',
+                    ordinal: false,
+                    labels: {
+                        format: '{value:%Y-%b-%e}'
+                    },
+                    dateTimeLabelFormats: {
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%e. %b',
+                        month: '%b \'%y',
+                        year: '%Y'
+                    }
+                }
+            }
+        });
+
         this.dataService.getRss(sessionStorage.getItem('super'),
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res => {
             this.rss = res;
@@ -42,10 +89,10 @@ export class DataDisplayComponent implements OnInit {
                         },
                     }]
                 },
-                title: {text: 'Awesome Chart'},
+                title: {text: 'RSS'},
                 series: [{
-                    showInLegend: true,
-                    // name: this.rss[0].Quantities[0].Type,
+                    showInLegend: false,
+                     name: 'RSS',
                     data: this.rss.map(function (point) {
                         return [Date.parse(point.Date), point.Quantities[0]['Value']]
                     }),
@@ -83,13 +130,18 @@ export class DataDisplayComponent implements OnInit {
                         },
                     }]
                 },
-                title: {text: 'Awesome Chart'},
+                title: {text: 'DOM/DOE'},
                 series: [{
                     showInLegend: true,
-                    // name: this.rss[0].Quantities[0].Type,
+                     name: 'DOM',
                     data: this.rss.map(function (point) {
                         return [Date.parse(point.Date), point.Quantities[0]['Value']]
                     }),
+                }, {
+                    name: 'DOE',
+                    data: this.rss.map(function (point) {
+                        return [Date.parse(point.Date), point.Quantities[1]['Value']]
+                    })
                 }],
                 xAxis: {
                     type: 'datetime',
@@ -107,47 +159,7 @@ export class DataDisplayComponent implements OnInit {
                 }
             }
         });
-        this.dataService.getRsStrongRsWeak(sessionStorage.getItem('super'),
-            sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res2 => {
-            this.rss = res2;
-            this.options2 = {
-                chart: {
-                    name: 'awesome',
-                    backgroundColor: '#F2F4F8',
-                    renderTo: 'chart2',
-                    zoomType: 'x'
-                },
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 800
-                        },
-                    }]
-                },
-                title: {text: 'Awesome Chart'},
-                series: [{
-                    showInLegend: true,
-                    // name: this.rss[0].Quantities[0].Type,
-                    data: this.rss.map(function (point) {
-                        return [Date.parse(point.Date), point.Quantities[0]['Value']]
-                    }),
-                }],
-                xAxis: {
-                    type: 'datetime',
-                    ordinal: false,
-                    labels: {
-                        format: '{value:%Y-%b-%e}'
-                    },
-                    dateTimeLabelFormats: {
-                        minute: '%H:%M',
-                        hour: '%H:%M',
-                        day: '%e. %b',
-                        month: '%b \'%y',
-                        year: '%Y'
-                    }
-                }
-            }
-        });
+
         this.dataService.getSymbolGrid(sessionStorage.getItem('super')).subscribe(sym => this.symbolGrid = sym);
         Highcharts.dateFormat('Month: %m Day: %d Year: %Y', 20, false);
         const exportFormats = Highcharts.getOptions().exporting.buttons.contextButton.menuItems;

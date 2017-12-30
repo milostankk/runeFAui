@@ -9,7 +9,7 @@ import {HttpClient} from '@angular/common/http';
 export class GroupService {
 
 
-    rootUrl = 'http://localhost/RuneFa.JanusWebApiServer/api';
+    rootUrl = 'http://192.168.1.99/RuneFa.JanusWebApiServer/api';
 
     constructor(private http: HttpClient) {
     }

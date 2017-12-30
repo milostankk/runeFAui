@@ -68,7 +68,7 @@
     <div class="row" style="width: 200px">
       <label style="line-height: 3px; font-family: inherit; font-weight: 500">Date to</label>
       <input [minDate]="minDate" class="form-control" placeholder="yyyy-mm-dd" [ngModel]="date"
-             (ngModelChange)="dateToChanged($event)" name="dp" ngbDatepicker #d="ngbDatepicker">
+             (ngModelChange)="selectDateTo($event)" name="dp" ngbDatepicker #d="ngbDatepicker">
       <button class="input-group-addon" (click)="d.toggle()" type="button">
         <img src="../../../assets/img/calendar-icon.png" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
       </button>

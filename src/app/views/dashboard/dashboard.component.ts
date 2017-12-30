@@ -65,40 +65,40 @@ export class DashboardComponent implements OnInit {
 
     // NEW CODE ENDED
 
-    groupClicked(e) {
-        this.content = null;
-        this.groupContainer = new GroupContainer();
-        this.groupContainer.group = new Group();
-        this.groupContainer.group.name = e;
-        this.selectedGroup = e;
-        this.setContext(e);
-        const index = this.getGroupIndex(e);
-        this.setSubgrouping(index);
-        if (e === 'All') {
-            this.groupContainer.subgroup = new Group();
-        }
-        this.dropDownSelection = 'Select';
-    }
-
-    groupChanged(e) {
-        this.groupContainer.group.content = e;
-        this.groupContainer.subgroup = new Group();
-        this.dropDownSelection = e;
-        this.selectedGroup = e;
-    }
-
-    subgroupClicked(e) {
-        this.groupContainer.subgroup.name = e;
-    }
-
-    dateFromChanged(e) {
-        this.groupContainer.dateFrom = new Date(e.year, e.month - 1, e.day);
-        this.minDate = e;
-    }
-
-    dateToChanged(e) {
-        this.groupContainer.dateTo = new Date(e.year, e.month - 1, e.day);
-    }
+    // groupClicked(e) {
+    //     this.content = null;
+    //     this.groupContainer = new GroupContainer();
+    //     this.groupContainer.group = new Group();
+    //     this.groupContainer.group.name = e;
+    //     this.selectedGroup = e;
+    //     this.setContext(e);
+    //     const index = this.getGroupIndex(e);
+    //     this.setSubgrouping(index);
+    //     if (e === 'All') {
+    //         this.groupContainer.subgroup = new Group();
+    //     }
+    //     this.dropDownSelection = 'Select';
+    // }
+    //
+    // groupChanged(e) {
+    //     this.groupContainer.group.content = e;
+    //     this.groupContainer.subgroup = new Group();
+    //     this.dropDownSelection = e;
+    //     this.selectedGroup = e;
+    // }
+    //
+    // subgroupClicked(e) {
+    //     this.groupContainer.subgroup.name = e;
+    // }
+    //
+    // dateFromChanged(e) {
+    //     this.groupContainer.dateFrom = new Date(e.year, e.month - 1, e.day);
+    //     this.minDate = e;
+    // }
+    //
+    // dateToChanged(e) {
+    //     this.groupContainer.dateTo = new Date(e.year, e.month - 1, e.day);
+    // }
 
     groupsSelectionDone(e) {
         console.log(this.groupContainer);
@@ -115,7 +115,7 @@ export class DashboardComponent implements OnInit {
     }
 
     isDataReady()  {
-        this.groupService.isDataReady().subscribe(data => this.dataReady = data, error2 => alert(error2))
+        this.groupService.isDataReady().subscribe(data => {this.dataReady = data; if (!this.dataReady) {alert('Data is being generated. Refresh the page in several minutes and try again.'); }}, error2 => alert(error2.message))
     }
 
    /* setGroups(): void {
