@@ -14,21 +14,28 @@
         <label ngbButtonLabel class="btn-primary">
           <input ngbButton (click)="groupClicked($event)" type="radio" name="Sector"> Sector
         </label>-->
-      </div>
-    </div>
-
-    <div class="col-3" *ngIf="selectedGroup === 'Index' || selectedGroup === 'Sector' || content?.includes(selectedGroup)">
-      <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{dropDownSelection}}</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button class="dropdown-item" *ngFor="let group of content" (click)="selectedGroup = group; dropDownSelection = group">{{group}}
-          </button>
+        <div class="col3"></div>
+        <div class="col-3" *ngIf="selectedGroup === 'Index' || selectedGroup === 'Sector' || content?.includes(selectedGroup)">
+          <div ngbDropdown class="d-inline-block">
+            <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{dropDownSelection}}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button class="dropdown-item" *ngFor="let group of content" (click)="selectedGroup = group; dropDownSelection = group">{{group}}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="col-6"></div>
   </div>
+
+
+
+<div class="row">
+
+</div>
+
+
+
 
 
   <br>

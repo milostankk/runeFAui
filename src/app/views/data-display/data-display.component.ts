@@ -23,11 +23,15 @@ export class DataDisplayComponent implements OnInit {
     symbolGrid;
     array: any[];
     processed_json: any[];
+    title;
+    dateTitle;
 
     constructor(private dataService: DataService) {
+        this.title = sessionStorage.getItem('super');
         this.dataService.getRsStrongRsWeak(sessionStorage.getItem('super'),
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res2 => {
             this.rss = res2;
+            const self = this;
             this.options2 = {
                 chart: {
                     name: 'awesome',
@@ -47,6 +51,7 @@ export class DataDisplayComponent implements OnInit {
                     showInLegend: true,
                     name: 'RsStrong',
                     data: this.rss.map(function (point) {
+                        self.dateTitle = new Date(point.Date).toDateString();
                         return [Date.parse(point.Date), point.Quantities[0]['Value']]
                     }),
                 }, {
@@ -71,6 +76,8 @@ export class DataDisplayComponent implements OnInit {
                 }
             }
         });
+
+
 
         this.dataService.getRss(sessionStorage.getItem('super'),
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res => {
@@ -169,6 +176,7 @@ export class DataDisplayComponent implements OnInit {
 
 
     ngOnInit() {
+
 
     }
 
