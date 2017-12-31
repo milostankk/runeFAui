@@ -4,6 +4,7 @@ import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
 import * as HighchartsOfflineExporting from 'highcharts-export-csv';
 import {SymbolDp} from '../../symbolDp';
+import {tr} from 'ngx-bootstrap';
 
 
 HighChartsExporting(Highcharts);
@@ -23,6 +24,37 @@ export class DataDisplayComponent implements OnInit {
     symbolGrid;
     title;
     dateTitle;
+
+
+
+    get(e) {
+        console.log(new Date(e.min));
+        console.log(new Date(e.max));
+
+        const min = e.min;
+        const max = e.max;
+       return{ min: min, max: max, redraw: true}
+       //  Highcharts.charts[0].xAxis[0].setExtremes(min, max, true);
+       //  Highcharts.dateFormat(null, min);
+       //  Highcharts.dateFormat(null, max);
+       //  Highcharts.setOptions({
+       //      xAxis: {
+       //          min: min,
+       //          max: max
+       //      }
+       //  })
+       //  console.log(Highcharts.charts[0].xAxis[0].getExtremes());
+       //  return {min, max, true: true}
+        //  Highcharts.chart[0].xAxis[0].setExtremes(e.min, e.max);
+      //   this.options = {
+      //     xAxis: {
+      //         setExtremes: (e) => {
+      //             Highcharts.dateFormat(null, e.min);
+      //             Highcharts.dateFormat(null. e.max)
+      //         }
+      //     }
+      //   }
+    }
 
     constructor(private dataService: DataService) {
         this.title = sessionStorage.getItem('super');
@@ -59,6 +91,9 @@ export class DataDisplayComponent implements OnInit {
                     })
                 }],
                 xAxis: {
+                    events: {
+                        setExtremes: this.get.bind(self)
+                    },
                     type: 'datetime',
                     ordinal: false,
                     labels: {
@@ -101,6 +136,9 @@ export class DataDisplayComponent implements OnInit {
                     }),
                 }],
                 xAxis: {
+                    events: {
+                        setExtremes: this.get
+                    },
                     type: 'datetime',
                     ordinal: false,
                     labels: {
@@ -148,6 +186,9 @@ export class DataDisplayComponent implements OnInit {
                     })
                 }],
                 xAxis: {
+                    events: {
+                        setExtremes: this.get
+                    },
                     type: 'datetime',
                     ordinal: false,
                     labels: {

@@ -39,7 +39,6 @@
     "core-js": "2.5.1",
     "dragula": "3.7.2",
     "font-awesome": "^4.7.0",
-    "highcharts": "^6.0.4",
     "highcharts-exporting": "^0.1.2",
     "highcharts-offline-exporting": "^0.1.2",
     "moment": "^2.19.1",
