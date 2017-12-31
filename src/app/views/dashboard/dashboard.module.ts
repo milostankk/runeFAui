@@ -10,6 +10,7 @@ import {DataService} from '../../data.service';
 import {ChartModule} from 'angular2-highcharts';
 import {HttpClientModule} from '@angular/common/http';
 
+
 @NgModule({
     imports: [
         DashboardRoutingModule,

@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
-import {mockGroups, mockIndicies, mockSectors} from './mock-data';
 import {GroupViewModel} from './groupViewModel';
 import {HttpClient} from '@angular/common/http';
 
@@ -9,14 +8,11 @@ import {HttpClient} from '@angular/common/http';
 export class GroupService {
 
 
-    rootUrl = 'http://192.168.1.99/RuneFa.JanusWebApiServer/api';
+    rootUrl = 'http://localhost/RuneFa.JanusWebApiServer/api';
 
     constructor(private http: HttpClient) {
     }
 
-    getGroups(): Observable<GroupViewModel[]> {
-        return of(mockGroups);
-    }
     //
     // getIndicies(): Observable<string[]> {
     //     return of(mockIndicies);

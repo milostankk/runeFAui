@@ -72,6 +72,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { DataNotReadyComponent } from './views/data-not-ready/data-not-ready.component';
 
 
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -81,7 +82,8 @@ import { DataNotReadyComponent } from './views/data-not-ready/data-not-ready.com
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-      ChartModule.forRoot(require('highcharts'))
+      ChartModule.forRoot(require('highcharts')),
+
   ],
   declarations: [
     AppComponent,

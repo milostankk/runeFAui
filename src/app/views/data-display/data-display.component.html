@@ -6,19 +6,19 @@
 
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-12">
             <chart id="chart2" style="width: 100% !important; display: block" [options]="options2"></chart>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-12">
             <chart id="chart" style="width: 100% !important; display: block" [options]="options"></chart>
         </div>
     </div>
     <br>
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-12">
             <chart id="chart1" style="width: 100% !important; display: block" [options]="options1"></chart>
         </div>
     </div>
@@ -28,11 +28,17 @@
     <br>
     <br>
 
+
+
+
     <h1>{{dateTitle}}</h1>
     <div class="row">
         <table class="table table-striped">
             <th>
                 <button class="btn btn-primary">Ticker</button>
+            </th>
+            <th>
+                <button class="btn btn-primary">Company</button>
             </th>
             <th>
                 <button class="btn btn-primary">Relative Strength</button>
@@ -48,6 +54,7 @@
             </th>
             <tr *ngFor="let sym of symbolGrid">
                 <td>{{sym.Ticker}}</td>
+                <td>{{sym.Name}}</td>
                 <td>{{sym.RelativeStrength | number : '1.2-3'}}</td>
                 <td>{{sym.OffensiveStrength | number: '1.2-3'}}</td>
                 <td>{{sym.DefensiveStrength | number: '1.2-3'}}</td>

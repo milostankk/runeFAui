@@ -94,7 +94,7 @@ export class DataDisplayComponent implements OnInit {
                 },
                 title: {text: 'RSS'},
                 series: [{
-                    showInLegend: false,
+                    showInLegend: true,
                      name: 'RSS',
                     data: this.rss.map(function (point) {
                         return [Date.parse(point.Date), point.Quantities[0]['Value']]

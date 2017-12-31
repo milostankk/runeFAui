@@ -3,7 +3,7 @@
 
   <div class="row">
     <label style="text-align: center; vertical-align: middle; line-height: 33px; font-family: inherit; font-weight: 500;">Group</label>
-    <div class="col-3">
+    <div class="col-md-3">
       <div class="btn-group" ngbRadioGroup>
         <label ngbButtonLabel class="btn-primary" *ngFor="let group of grouping">
         <input ngbButton (click)="selectGroup(group)" type="radio" value="{{group}}"> {{group}}
@@ -14,8 +14,8 @@
         <label ngbButtonLabel class="btn-primary">
           <input ngbButton (click)="groupClicked($event)" type="radio" name="Sector"> Sector
         </label>-->
-        <div class="col3"></div>
-        <div class="col-3" *ngIf="selectedGroup === 'Index' || selectedGroup === 'Sector' || content?.includes(selectedGroup)">
+
+        <div class="col-md-3" *ngIf="selectedGroup === 'Index' || selectedGroup === 'Sector' || content?.includes(selectedGroup)">
           <div ngbDropdown class="d-inline-block">
             <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{dropDownSelection}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
@@ -85,9 +85,9 @@
 
   <div class="animated fadeIn">
     <div class="row" style="text-align: center;">
-      <div class="col-4"></div>
-      <div class="col-4" *ngIf="showDates()">
-        <button class="btn btn-primary" (click)="post()" style="width: 100%">Generate</button>
+      <div class="col-md-4"></div>
+      <div class="col-md-4" *ngIf="showDates()">
+        <button class="btn btn-primary" (click)="post()" >Generate</button>
       </div>
       <div class="col-4"></div>
     </div>

@@ -4,17 +4,20 @@ $border-color:                      $gray-200;
 
 // Navbar
 
-$navbar-height:                     60px;
+$navbar-height:                     70px;
 
 $navbar-brand-width:                250px;
 $navbar-brand-bg:                   theme-color("primary");
-$navbar-brand-logo-size:            90px auto;
+$navbar-brand-logo-size:            60px auto;
 $navbar-brand-border: (
-    bottom: (
-        size:                       1px,
-        style:                      solid,
-        color:                      darken(theme-color("primary"),10%)
-    )
+    //bottom: (
+    //    size:                       1px,
+    //    style:                      solid,
+    //    color:                      darken(theme-color("primary"),10%)
+    //),
+        right: (
+        size: 1px, style: solid, color: #c0cadd
+)
 );
 
 $navbar-color:                      $gray-300;
