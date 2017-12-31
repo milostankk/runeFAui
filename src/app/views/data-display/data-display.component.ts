@@ -24,36 +24,25 @@ export class DataDisplayComponent implements OnInit {
     symbolGrid;
     title;
     dateTitle;
+    testChart;
+    someSeries;
+    highcharts;
+    asd = false;
 
+    loadChart(e) {
+        this.testChart = e;
+    }
 
 
     get(e) {
-        console.log(new Date(e.min));
-        console.log(new Date(e.max));
+            this.highcharts.charts.forEach(chart => {
+                chart.xAxis[0].setExtremes(e.min, e.max);
+                chart.showResetZoom();
+            });
+    }
 
-        const min = e.min;
-        const max = e.max;
-       return{ min: min, max: max, redraw: true}
-       //  Highcharts.charts[0].xAxis[0].setExtremes(min, max, true);
-       //  Highcharts.dateFormat(null, min);
-       //  Highcharts.dateFormat(null, max);
-       //  Highcharts.setOptions({
-       //      xAxis: {
-       //          min: min,
-       //          max: max
-       //      }
-       //  })
-       //  console.log(Highcharts.charts[0].xAxis[0].getExtremes());
-       //  return {min, max, true: true}
-        //  Highcharts.chart[0].xAxis[0].setExtremes(e.min, e.max);
-      //   this.options = {
-      //     xAxis: {
-      //         setExtremes: (e) => {
-      //             Highcharts.dateFormat(null, e.min);
-      //             Highcharts.dateFormat(null. e.max)
-      //         }
-      //     }
-      //   }
+    redirectToUrl(ticker) {
+        window.location.href = `https://finance.yahoo.com/quote/${ticker}`
     }
 
     constructor(private dataService: DataService) {
@@ -92,7 +81,7 @@ export class DataDisplayComponent implements OnInit {
                 }],
                 xAxis: {
                     events: {
-                        setExtremes: this.get.bind(self)
+                        afterSetExtremes: this.get.bind(self)
                     },
                     type: 'datetime',
                     ordinal: false,
@@ -113,6 +102,7 @@ export class DataDisplayComponent implements OnInit {
         this.dataService.getRss(sessionStorage.getItem('super'),
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res => {
             this.rss = res;
+            const self = this;
             this.options = {
                 chart: {
                     name: 'awesome',
@@ -137,7 +127,7 @@ export class DataDisplayComponent implements OnInit {
                 }],
                 xAxis: {
                     events: {
-                        setExtremes: this.get
+                        afterSetExtremes: this.get.bind(self)
                     },
                     type: 'datetime',
                     ordinal: false,
@@ -158,6 +148,7 @@ export class DataDisplayComponent implements OnInit {
         this.dataService.getDomDoe(sessionStorage.getItem('super'),
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res1 => {
             this.rss = res1;
+            const self = this;
             this.options1 = {
                 chart: {
                     name: 'awesome',
@@ -187,7 +178,7 @@ export class DataDisplayComponent implements OnInit {
                 }],
                 xAxis: {
                     events: {
-                        setExtremes: this.get
+                        afterSetExtremes: this.get.bind(self)
                     },
                     type: 'datetime',
                     ordinal: false,
@@ -209,6 +200,7 @@ export class DataDisplayComponent implements OnInit {
         Highcharts.dateFormat('Month: %m Day: %d Year: %Y', 20, false);
         const exportFormats = Highcharts.getOptions().exporting.buttons.contextButton.menuItems;
         exportFormats.pop();
+        this.highcharts = Highcharts;
     }
 
 

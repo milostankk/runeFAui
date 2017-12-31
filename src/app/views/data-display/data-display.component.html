@@ -1,19 +1,20 @@
 <div class="animated fadeIn">
 
 
-
     <h1>{{title}}</h1>
 
 
     <div class="row">
         <div class="col-md-12">
-            <chart id="chart2"  style="width: 100% !important; display: block" [options]="options2"></chart>
+            <chart id="chart2" style="width: 100% !important; display: block" [options]="options2">
+            </chart>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            <chart id="chart" style="width: 100% !important; display: block" [options]="options"></chart>
+            <chart id="chart" (load)="loadChart($event.context)" style="width: 100% !important; display: block"
+                   [options]="options"></chart>
         </div>
     </div>
     <br>
@@ -27,8 +28,6 @@
     <br>
     <br>
     <br>
-
-
 
 
     <h1>{{dateTitle}}</h1>
@@ -52,13 +51,13 @@
             <th>
                 <button class="btn btn-primary">Close Price</button>
             </th>
-            <tr *ngFor="let sym of symbolGrid">
-                <td>{{sym.Ticker}}</td>
-                <td>{{sym.Name}}</td>
-                <td>{{sym.RelativeStrength | number : '1.2-3'}}</td>
-                <td>{{sym.OffensiveStrength | number: '1.2-3'}}</td>
-                <td>{{sym.DefensiveStrength | number: '1.2-3'}}</td>
-                <td>{{sym.ClosePrice | number: '1.2-2'}}</td>
+            <tr *ngFor="let sym of symbolGrid" (click)="redirectToUrl(sym.Ticker)" class="handPointer">
+                    <td>{{sym.Ticker}}</td>
+                    <td>{{sym.Name}}</td>
+                    <td>{{sym.RelativeStrength | number : '1.2-3'}}</td>
+                    <td>{{sym.OffensiveStrength | number: '1.2-3'}}</td>
+                    <td>{{sym.DefensiveStrength | number: '1.2-3'}}</td>
+                    <td>{{sym.ClosePrice | number: '1.2-2'}}</td>
             </tr>
         </table>
     </div>
