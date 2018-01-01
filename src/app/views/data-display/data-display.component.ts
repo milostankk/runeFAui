@@ -25,21 +25,30 @@ export class DataDisplayComponent implements OnInit {
     title;
     dateTitle;
     testChart;
-    someSeries;
     highcharts;
-    asd = false;
+    //
+    // column = '';
+    // direction: number;
 
-    loadChart(e) {
-        this.testChart = e;
-    }
+    // loadChart(e) {
+    //     this.testChart = e;
+    // }
 
 
     get(e) {
             this.highcharts.charts.forEach(chart => {
                 chart.xAxis[0].setExtremes(e.min, e.max);
                 chart.showResetZoom();
+                this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
+                    new Date(e.max).toISOString()).subscribe(sym => this.symbolGrid = sym);
             });
     }
+
+    // sort(property, bool) {
+    //     bool = !bool;
+    //     this.column = property;
+    //     this.direction = bool ? 1 : -1;
+    // }
 
     redirectToUrl(ticker) {
         window.location.href = `https://finance.yahoo.com/quote/${ticker}`
@@ -196,7 +205,8 @@ export class DataDisplayComponent implements OnInit {
             }
         });
 
-        this.dataService.getSymbolGrid(sessionStorage.getItem('super')).subscribe(sym => this.symbolGrid = sym);
+        this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
+            sessionStorage.getItem('to')).subscribe(sym => this.symbolGrid = sym);
         Highcharts.dateFormat('Month: %m Day: %d Year: %Y', 20, false);
         const exportFormats = Highcharts.getOptions().exporting.buttons.contextButton.menuItems;
         exportFormats.pop();

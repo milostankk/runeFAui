@@ -31,27 +31,45 @@
 
 
     <h1>{{dateTitle}}</h1>
-    <div class="row">
+    <div class="row" *ngIf="symbolGrid?.length">
         <table class="table table-striped">
-            <th>
-                <button class="btn btn-primary">Ticker</button>
-            </th>
-            <th>
-                <button class="btn btn-primary">Company</button>
-            </th>
-            <th>
-                <button class="btn btn-primary">Relative Strength</button>
-            </th>
-            <th>
-                <button class="btn btn-primary">Offensive Strength</button>
-            </th>
-            <th>
-                <button class="btn btn-primary">Defensive Strength</button>
-            </th>
-            <th>
-                <button class="btn btn-primary">Close Price</button>
-            </th>
-            <tr *ngFor="let sym of symbolGrid" (click)="redirectToUrl(sym.Ticker)" class="handPointer">
+            <!--<th>-->
+                <!--<button class="btn btn-primary" [ngClass]="{'fa-sort': column != 'Ticker',-->
+                        <!--'fa-sort-asc': (column == 'Ticker' && !isDesc),-->
+                        <!--'fa-sort-desc': (column == 'Ticker' && isDesc) }" (click)="sort('Ticker', isDesc)">Ticker</button>-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--<button class="btn btn-primary" [ngClass]="{'fa-sort': column != 'Name',-->
+                        <!--'fa-sort-asc': (column == 'Name' && !isDesc2),-->
+                        <!--'fa-sort-desc': (column == 'Name' && isDesc2) }" (click)="sort('Name', isDesc2)">Company</button>-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--<button class="btn btn-primary" [ngClass]="{'fa-sort': column != 'RelativeStrength',-->
+                        <!--'fa-sort-asc': (column == 'RelativeStrength' && !isDesc3),-->
+                        <!--'fa-sort-desc': (column == 'RelativeStrength' && isDesc3) }" (click)="sort('RelativeStrength', isDesc3)">Relative Strength</button>-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--<button class="btn btn-primary" [ngClass]="{'fa-sort': column != 'OffensiveStrength',-->
+                        <!--'fa-sort-asc': (column == 'OffensiveStrength' && !isDesc4),-->
+                        <!--'fa-sort-desc': (column == 'OffensiveStrength' && isDesc4) }" (click)="sort('OffensiveStrength', isDesc4)">Offensive Strength</button>-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--<button class="btn btn-primary" [ngClass]="{'fa-sort': column != 'DefensiveStrength',-->
+                        <!--'fa-sort-asc': (column == 'DefensiveStrength' && !isDesc6),-->
+                        <!--'fa-sort-desc': (column == 'DefensiveStrength' && isDesc6) }" (click)="sort('DefensiveStrength', isDesc5)">Defensive Strength</button>-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--<button class="btn btn-primary" [ngClass]="{'fa-sort': column != 'ClosePrice',-->
+                        <!--'fa-sort-asc': (column == 'ClosePrice' && !isDesc5),-->
+                        <!--'fa-sort-desc': (column == 'ClosePrice' && isDesc5) }" (click)="sort('ClosePrice', isDesc6)">Close Price</button>-->
+            <!--</th>-->
+            <th>Ticker</th>
+            <th>Company</th>
+            <th>Relative Strength</th>
+            <th>Offensive Strength</th>
+            <th>Defensive Strength</th>
+            <th>Close Price</th>
+            <tr *ngFor="let sym of symbolGrid | OrderrPipe: {property: column, direction: direction}" (click)="redirectToUrl(sym.Ticker)" class="handPointer">
                     <td>{{sym.Ticker}}</td>
                     <td>{{sym.Name}}</td>
                     <td>{{sym.RelativeStrength | number : '1.2-3'}}</td>

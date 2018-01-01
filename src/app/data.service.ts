@@ -67,7 +67,7 @@ export class DataService {
         let queryParams: HttpParams = new HttpParams();
         queryParams = queryParams.append('super', superName);
         if (date) {
-            queryParams = queryParams.append('from', date);
+            queryParams = queryParams.append('date', date);
         }
         return this.http.get(this.rootUrl + '/GetSymbolGrid', {params: queryParams});
     }

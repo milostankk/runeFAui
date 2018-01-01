@@ -70,6 +70,7 @@ import {ChartModule} from 'angular2-highcharts';
 import {DataService} from './data.service';
 import {HttpClientModule} from '@angular/common/http';
 import { DataNotReadyComponent } from './views/data-not-ready/data-not-ready.component';
+import {OrderrPipe} from './pipes/orderr.pipe';
 
 
 
@@ -92,6 +93,7 @@ import { DataNotReadyComponent } from './views/data-not-ready/data-not-ready.com
     ...APP_DIRECTIVES,
     DataDisplayComponent,
     DataNotReadyComponent,
+      OrderrPipe
   ],
   providers: [DataService,{
     provide: LocationStrategy,
