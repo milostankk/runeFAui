@@ -5,6 +5,10 @@ import * as HighChartsExporting from 'highcharts-exporting';
 import * as HighchartsOfflineExporting from 'highcharts-export-csv';
 import {SymbolDp} from '../../symbolDp';
 import {tr} from 'ngx-bootstrap';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+// import '~@swimlane/ngx-datatable/release/index.css';
+// import '~@swimlane/ngx-datatable/release/themes/material.css';
+// import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
 
 HighChartsExporting(Highcharts);
@@ -17,42 +21,41 @@ HighchartsOfflineExporting(Highcharts);
 })
 export class DataDisplayComponent implements OnInit {
 
-    options: Object;
-    options1: Object;
-    options2: Object;
+    optionsRSS: Object;
+    optionsDOMDOE: Object;
+    optionsRSSRSW: Object;
     rss;
-    symbolGrid;
+    symbolGrid: any = [];
     title;
     dateTitle;
-    testChart;
     highcharts;
-    //
-    // column = '';
-    // direction: number;
 
-    // loadChart(e) {
-    //     this.testChart = e;
-    // }
-
-
-    get(e) {
-            this.highcharts.charts.forEach(chart => {
-                chart.xAxis[0].setExtremes(e.min, e.max);
-                chart.showResetZoom();
-                this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
-                    new Date(e.max).toISOString()).subscribe(sym => this.symbolGrid = sym);
-            });
+    afterSetExtremes(e) {
+        const date = e.target.series[0].points;
+        this.dateTitle = new Date(date[date.length - 1].x).toDateString();
+        console.log(this.dateTitle);
+        if ((e.min && e.max)) {
+             this.highcharts.charts.forEach(chart => {
+                 chart.xAxis[0].setExtremes(e.min, e.max);
+                 chart.showResetZoom();
+             });
+            if (e.userMax || e.userMIn) {
+                    this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
+                        new Date(date[date.length - 1].x).toISOString()).subscribe(sym => this.symbolGrid = sym);
+            }
+        }
     }
 
-    // sort(property, bool) {
-    //     bool = !bool;
-    //     this.column = property;
-    //     this.direction = bool ? 1 : -1;
-    // }
+     // returnLatestDate(e) {
+     //     const date = e.target.series[0].points;
+     //     this.dateTitle = new Date(date[date.length - 1].x).toDateString();
+     //     return;
+     // }
 
-    redirectToUrl(ticker) {
-        window.location.href = `https://finance.yahoo.com/quote/${ticker}`
+    redirectToUrl(e) {
+        window.location.href = `https://finance.yahoo.com/quote/${e.selected[0].Ticker}`
     }
+
 
     constructor(private dataService: DataService) {
         this.title = sessionStorage.getItem('super');
@@ -60,11 +63,11 @@ export class DataDisplayComponent implements OnInit {
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res2 => {
             this.rss = res2;
             const self = this;
-            this.options2 = {
+            this.optionsRSSRSW = {
                 chart: {
                     name: 'awesome',
                     backgroundColor: '#F2F4F8',
-                    renderTo: 'chart2',
+                    renderTo: 'RSSRSW',
                     zoomType: 'x'
                 },
                 responsive: {
@@ -79,7 +82,6 @@ export class DataDisplayComponent implements OnInit {
                     showInLegend: true,
                     name: 'RsStrong',
                     data: this.rss.map(function (point) {
-                        self.dateTitle = new Date(point.Date).toDateString();
                         return [Date.parse(point.Date), point.Quantities[0]['Value']]
                     }),
                 }, {
@@ -90,7 +92,7 @@ export class DataDisplayComponent implements OnInit {
                 }],
                 xAxis: {
                     events: {
-                        afterSetExtremes: this.get.bind(self)
+                        afterSetExtremes: this.afterSetExtremes.bind(self)
                     },
                     type: 'datetime',
                     ordinal: false,
@@ -112,11 +114,11 @@ export class DataDisplayComponent implements OnInit {
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res => {
             this.rss = res;
             const self = this;
-            this.options = {
+            this.optionsRSS = {
                 chart: {
                     name: 'awesome',
                     backgroundColor: '#F2F4F8',
-                    renderTo: 'chart',
+                    renderTo: 'RSS',
                     zoomType: 'x'
                 },
                 responsive: {
@@ -136,7 +138,7 @@ export class DataDisplayComponent implements OnInit {
                 }],
                 xAxis: {
                     events: {
-                        afterSetExtremes: this.get.bind(self)
+                        afterSetExtremes: this.afterSetExtremes.bind(self)
                     },
                     type: 'datetime',
                     ordinal: false,
@@ -158,11 +160,11 @@ export class DataDisplayComponent implements OnInit {
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(res1 => {
             this.rss = res1;
             const self = this;
-            this.options1 = {
+            this.optionsDOMDOE = {
                 chart: {
                     name: 'awesome',
                     backgroundColor: '#F2F4F8',
-                    renderTo: 'chart1',
+                    renderTo: 'DOMDOE',
                     zoomType: 'x'
                 },
                 responsive: {
@@ -187,7 +189,7 @@ export class DataDisplayComponent implements OnInit {
                 }],
                 xAxis: {
                     events: {
-                        afterSetExtremes: this.get.bind(self)
+                        afterSetExtremes: this.afterSetExtremes.bind(self)
                     },
                     type: 'datetime',
                     ordinal: false,

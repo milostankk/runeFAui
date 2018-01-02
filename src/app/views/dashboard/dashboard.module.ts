@@ -11,6 +11,7 @@ import {ChartModule} from 'angular2-highcharts';
 import {HttpClientModule} from '@angular/common/http';
 
 
+
 @NgModule({
     imports: [
         DashboardRoutingModule,
@@ -18,7 +19,7 @@ import {HttpClientModule} from '@angular/common/http';
         NgbModule.forRoot(),
         CommonModule,
         FormsModule,
-        ChartModule.forRoot(require('highcharts/highstock'))
+        ChartModule.forRoot(require('highcharts/highstock')),
     ],
     declarations: [DashboardComponent],
     providers: [GroupService, DataService]

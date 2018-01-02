@@ -71,7 +71,7 @@ import {DataService} from './data.service';
 import {HttpClientModule} from '@angular/common/http';
 import { DataNotReadyComponent } from './views/data-not-ready/data-not-ready.component';
 import {OrderrPipe} from './pipes/orderr.pipe';
-
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 
 @NgModule({
@@ -84,6 +84,7 @@ import {OrderrPipe} from './pipes/orderr.pipe';
     TabsModule.forRoot(),
     ChartsModule,
       ChartModule.forRoot(require('highcharts')),
+      NgxDatatableModule
 
   ],
   declarations: [
