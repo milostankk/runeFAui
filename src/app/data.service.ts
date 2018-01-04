@@ -3,7 +3,9 @@ import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
 // import {mockData, rss, symbolGrid} from "./mock-data";
 // import {SymbolDp} from "./symbolDp";
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {RequestOptions} from 'https';
+import {ResponseContentType} from '@angular/http';
 
 @Injectable()
 export class DataService {
@@ -12,17 +14,6 @@ export class DataService {
 
     constructor(private http: HttpClient) {
     }
-
-
-
-
-    // getData(): Observable<object[]> {
-    //     return of(mockData);
-    // }
-
-    // getRss(): Observable<SymbolDp[]> {
-    //     return of(rss);
-    // }
 
     getRss(superName: string, from?, to?) {
         let queryParams: HttpParams = new HttpParams();
@@ -70,6 +61,30 @@ export class DataService {
             queryParams = queryParams.append('date', date);
         }
         return this.http.get(this.rootUrl + '/GetSymbolGrid', {params: queryParams});
+    }
+
+    getChart(endPoint, superName, from?, to?) {
+        let queryParams: HttpParams = new HttpParams();
+        queryParams = queryParams.append('super', superName);
+        if (from) {
+            queryParams = queryParams.append('from', from);
+        }
+        if (to) {
+            queryParams = queryParams.append('to', to);
+        }
+
+        return this.http.get(this.rootUrl + endPoint, {params: queryParams});
+    }
+
+    downloadSymbolGrid(superName, date?) {
+      //  const headers = new HttpHeaders({'Content-Type': 'application/json', 'Accept': 'application/json'});
+
+        let queryParams: HttpParams = new HttpParams();
+        queryParams = queryParams.append('super', superName);
+        if (date) {
+            queryParams = queryParams.append('date', date);
+        }
+        return this.http.get(this.rootUrl + '/DownloadSymbolGrid', {params: queryParams,  responseType: 'blob'});
     }
 
 }

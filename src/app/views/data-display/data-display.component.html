@@ -2,7 +2,21 @@
 
 
     <h1>{{title}}</h1>
-    <div class="row">
+    <div *ngIf="options?.length">
+        <div *ngFor="let option of options; let i = index">
+            <div class="row">
+                <div class="col-md-12">
+                    <chart id="{{option?.endpoint?.title}}" style="width: 100% !important; display: block"
+                           [options]="option?.option">
+                    </chart>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+
+    <!--<div class="row">
         <div class="col-md-12">
             <chart id="RSSRSW" style="width: 100% !important; display: block" [options]="optionsRSSRSW">
             </chart>
@@ -24,42 +38,44 @@
         <div class="col-md-12">
             <chart id="DOMDOE" style="width: 100% !important; display: block" [options]="optionsDOMDOE"></chart>
         </div>
-    </div>
+    </div>-->
 
     <br>
     <br>
     <br>
 
-
-<div class="row" *ngIf="symbolGrid?.length">
     <h1>{{dateTitle}}</h1>
+    <button class="btn btn-primary" (click)="downloadSymbolGrid()" *ngIf="symbolGrid?.length">Download</button>
     <br>
-    <div class="cold-md-12">
-        <ngx-datatable [selectionType]="'single'"  [loadingIndicator]="loading" (select)="redirectToUrl($event)"  [headerHeight]="50" [rowHeight]="50" class="material" [rows]="symbolGrid">
-            <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker"></ngx-datatable-column>
-            <ngx-datatable-column prop="Name" [width]="270"></ngx-datatable-column>
-            <ngx-datatable-column prop="RelativeStrength">
-                <ng-template let-value="value" ngx-datatable-cell-template>
-                    {{value | number: '1.2-3'}}
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column prop="OffensiveStrength">
-                <ng-template let-value="value" ngx-datatable-cell-template>
-                    {{value | number: '1.2-3'}}
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column prop="DefensiveStrength">
-                <ng-template let-value="value" ngx-datatable-cell-template>
-                    {{value | number: '1.2-3'}}
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column  prop="ClosePrice">
-                <ng-template let-value="value" ngx-datatable-cell-template>
-                    {{value | number: '1.2-2'}}
-                </ng-template>
-            </ngx-datatable-column>
-        </ngx-datatable>
+    <br>
+    <div class="row" *ngIf="symbolGrid?.length">
+        <div class="cold-md-12">
+            <ngx-datatable [selectionType]="'single'" [loadingIndicator]="loading" (select)="redirectToUrl($event)"
+                           [headerHeight]="50" [rowHeight]="50" class="material" [rows]="symbolGrid">
+                <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker"></ngx-datatable-column>
+                <ngx-datatable-column prop="Name" [width]="270"></ngx-datatable-column>
+                <ngx-datatable-column prop="RelativeStrength">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | number: '1.2-3'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="OffensiveStrength">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | number: '1.2-3'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="DefensiveStrength">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | number: '1.2-3'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ClosePrice">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | number: '1.2-2'}}
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
     </div>
-</div>
 
 </div>
