@@ -34,8 +34,8 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
     highcharts;
     endpoints = [
         {endPoint: '/GetRss', title: 'RSS'},
-        {endPoint: '/GetDomDoe', title: 'DOM/DOE'},
         {endPoint: '/GetRsStrongRsWeak', title: 'RS Strong/Weak'},
+        {endPoint: '/GetDomDoe', title: 'DOM/DOE'},
         {endPoint: '/GetSuper', title: 'Super Group'}];
     options: any[] = [];
 
@@ -311,7 +311,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
                             }
                         }
                     };
-                    this.options.push({option: option, endpoint: endPoint});
+                    this.options[ep.indexOf(endPoint)] = ({option: option, endpoint: endPoint});
                     self.dateTitle = new Date(res[res.length - 1].Date).toDateString();
                 }, err => {
                     alert(err);

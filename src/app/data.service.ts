@@ -1,11 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {of} from 'rxjs/observable/of';
-// import {mockData, rss, symbolGrid} from "./mock-data";
-// import {SymbolDp} from "./symbolDp";
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {RequestOptions} from 'https';
-import {ResponseContentType} from '@angular/http';
 
 @Injectable()
 export class DataService {
