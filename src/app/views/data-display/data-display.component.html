@@ -19,12 +19,9 @@
     <br>
     <br>
     <br>
-
+    <h1 *ngIf="sectorGrid?.length">{{dateTitle}}</h1>
     <div class="row" *ngIf="sectorGrid?.length">
-        <h1>{{dateTitle}}</h1>
-        <br>
-        <br>
-        <div class="cold-md-12">
+        <div class="col-12">
             <ngx-datatable [selectionType]="'single'" [loadingIndicator]="loading"
                            [headerHeight]="50" [rowHeight]="50" class="material" [rows]="sectorGrid">
                 <ngx-datatable-column prop="Sector" [width]="270"></ngx-datatable-column>
@@ -89,5 +86,4 @@
             </ngx-datatable>
         </div>
     </div>
-
 </div>
