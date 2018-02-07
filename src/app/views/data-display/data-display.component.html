@@ -54,6 +54,11 @@
                            [headerHeight]="50" [rowHeight]="50" class="material" [rows]="symbolGrid">
                 <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker"></ngx-datatable-column>
                 <ngx-datatable-column prop="Name" [width]="270"></ngx-datatable-column>
+                <ngx-datatable-column prop="Sector">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
                 <ngx-datatable-column prop="RelativeStrength">
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{value | number: '1.2-3'}}
@@ -72,11 +77,6 @@
                 <ngx-datatable-column prop="ClosePrice">
                     <ng-template let-value="value" ngx-datatable-cell-template>
                         {{value | number: '1.2-2'}}
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column prop="Sector">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value}}
                     </ng-template>
                 </ngx-datatable-column>
             </ngx-datatable>
