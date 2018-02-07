@@ -57,6 +57,15 @@ export class DataService {
         return this.http.get(this.rootUrl + '/GetSymbolGrid', {params: queryParams});
     }
 
+    getSectorGrid(superName, date?) {
+        let queryParams: HttpParams = new HttpParams();
+        queryParams = queryParams.append('super', superName);
+        if (date) {
+            queryParams = queryParams.append('date', date);
+        }
+        return this.http.get(this.rootUrl + '/GetSectorGrid', {params: queryParams});
+    }
+
     getChart(endPoint, superName, from?, to?, optional?) {
         let queryParams: HttpParams = new HttpParams();
         queryParams = queryParams.append('super', superName);

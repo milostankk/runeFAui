@@ -16,29 +16,36 @@
     </div>
 
 
-    <!--<div class="row">
-        <div class="col-md-12">
-            <chart id="RSSRSW" style="width: 100% !important; display: block" [options]="optionsRSSRSW">
-            </chart>
-        </div>
-    </div>
-
+    <br>
+    <br>
     <br>
 
-    <div class="row">
-        <div class="col-md-12">
-            <chart id="RSS"  style="width: 100% !important; display: block"
-                   [options]="optionsRSS"></chart>
+    <div class="row" *ngIf="sectorGrid?.length">
+        <h1>{{dateTitle}}</h1>
+        <br>
+        <br>
+        <div class="cold-md-12">
+            <ngx-datatable [selectionType]="'single'" [loadingIndicator]="loading"
+                           [headerHeight]="50" [rowHeight]="50" class="material" [rows]="sectorGrid">
+                <ngx-datatable-column prop="Sector" [width]="270"></ngx-datatable-column>
+                <ngx-datatable-column prop="RelativeStrength">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | number: '1.2-3'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="OffensiveStrength">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | number: '1.2-3'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="DefensiveStrength">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | number: '1.2-3'}}
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
         </div>
     </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-md-12">
-            <chart id="DOMDOE" style="width: 100% !important; display: block" [options]="optionsDOMDOE"></chart>
-        </div>
-    </div>-->
 
     <br>
     <br>
