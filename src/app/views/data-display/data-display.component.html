@@ -74,6 +74,11 @@
                         {{value | number: '1.2-2'}}
                     </ng-template>
                 </ngx-datatable-column>
+                <ngx-datatable-column prop="Sector">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
             </ngx-datatable>
         </div>
     </div>
