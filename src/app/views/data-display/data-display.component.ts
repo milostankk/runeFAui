@@ -163,11 +163,11 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
         }
     }
 
-    getPlotSectorStrength(index, sector) {
+    getPlotSectorStrength() {
         if (this.plotSectorStrength && this.plotSectorStrength.series && this.plotSectorStrength.series.length) {
             Highcharts.charts.splice(Highcharts.charts.length - 1, 1);
         }
-        this.dataService.getPlotSectorStrength(index, sector,
+        this.dataService.getPlotSectorStrength(this.selectedIndex, this.selectedSector,
             sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(data => {
             const res: any = data;
             const self = this;
