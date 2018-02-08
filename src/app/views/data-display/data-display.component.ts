@@ -20,7 +20,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
     sectorGrid: any = [];
     selectedIndex: string;
     selectedSector: string;
-    plotSectorStrength: any[] = [];
+    plotSectorStrength: any;
     plotSectorStrengthOptions: string[] = [];
     superType: string;
     title;
