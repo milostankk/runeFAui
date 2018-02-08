@@ -15,6 +15,39 @@
         </div>
     </div>
 
+    <div class="row">
+        <div *ngIf="superType && superType === 'Index'">
+            <div ngbDropdown class="d-inline-block">
+                <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                    {{selectedSector ? selectedSector : 'Select Sector'}}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button class="dropdown-item" *ngFor="let opt of plotSectorStrengthOptions"
+                            (click)="selectedSector = opt; getPlotSectorStrength(selectedIndex, selectedSector)">{{opt}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="superType && superType === 'Sector'">
+            <div ngbDropdown class="d-inline-block">
+                <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>
+                    {{selectedIndex ? selectedIndex : 'Select Index'}}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button class="dropdown-item" *ngFor="let opt of plotSectorStrengthOptions"
+                            (click)="selectedIndex = opt; getPlotSectorStrength(selectedIndex, selectedSector)">{{opt}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="plotSectorStrength?.series?.length">
+        <chart id="Plot Sector Strength" style="width: 100% !important; display: block"
+               [options]="plotSectorStrength">
+        </chart>
+    </div>
+
 
     <br>
     <br>

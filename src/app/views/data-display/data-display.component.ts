@@ -3,6 +3,7 @@ import {DataService} from '../../data.service';
 import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
 import * as HighchartsOfflineExporting from 'highcharts-export-csv';
+import {GroupService} from '../../group.service';
 
 
 HighChartsExporting(Highcharts);
@@ -17,6 +18,11 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
 
     symbolGrid: any = [];
     sectorGrid: any = [];
+    selectedIndex: string;
+    selectedSector: string;
+    plotSectorStrength: any[] = [];
+    plotSectorStrengthOptions: string[] = [];
+    superType: string;
     title;
     dateTitle;
     highcharts;
@@ -53,7 +59,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
             this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
                 new Date(data[data.length - 1].x).toISOString()).subscribe(sym => this.symbolGrid = sym);
 
-            if (sessionStorage.getItem('superType') !== 'Sector') {
+            if (this.superType !== 'Sector') {
                 this.dataService.getSectorGrid(sessionStorage.getItem('super'),
                     new Date(data[data.length - 1].x).toISOString()).subscribe(sym => this.sectorGrid = sym);
             }
@@ -74,16 +80,22 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
         window.location.href = fileUrl;
     }
 
-    constructor(private dataService: DataService) {
+    constructor(private dataService: DataService, private groupService: GroupService) {
         this.title = sessionStorage.getItem('super');
         this.mapCharts(this.endpoints);
+        this.superType = sessionStorage.getItem('superType') ? sessionStorage.getItem('superType') : 'Index';
 
-        this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
+        dataService.getSymbolGrid(sessionStorage.getItem('super'),
             sessionStorage.getItem('to')).subscribe(sym => this.symbolGrid = sym);
 
-        if (sessionStorage.getItem('superType') !== 'Sector') {
-            this.dataService.getSectorGrid(sessionStorage.getItem('super'),
+        if (this.superType !== 'Sector') {
+            this.selectedIndex = sessionStorage.getItem('super');
+            groupService.getSectors().subscribe(data => this.plotSectorStrengthOptions = data);
+            dataService.getSectorGrid(sessionStorage.getItem('super'),
                 sessionStorage.getItem('to')).subscribe(sym => this.sectorGrid = sym);
+        } else {
+            groupService.getIndices().subscribe(data => this.plotSectorStrengthOptions = data);
+            this.selectedSector = sessionStorage.getItem('super');
         }
 
         Highcharts.dateFormat('Month: %m Day: %d Year: %Y', 20, false);
@@ -149,6 +161,66 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
                     alert(err);
                 });
         }
+    }
+
+    getPlotSectorStrength(index, sector) {
+        if (this.plotSectorStrength && this.plotSectorStrength.series && this.plotSectorStrength.series.length) {
+            Highcharts.charts.splice(Highcharts.charts.length - 1, 1);
+        }
+        this.dataService.getPlotSectorStrength(index, sector,
+            sessionStorage.getItem('from'), sessionStorage.getItem('to')).subscribe(data => {
+            const res: any = data;
+            const self = this;
+            const series: any[] = [];
+            for (const quant of res[0].Quantities) {
+                series.push({
+                    showInLegend: true,
+                    name: quant.Type,
+                    data: res.map(function (point) {
+                        return [Date.parse(point.Date), point.Quantities[res[0].Quantities.indexOf(quant)]['Value']]
+                    }),
+                })
+            }
+            const option = {
+                chart: {
+                    reflow: false,
+                    name: 'Plot Sector Strength',
+                    backgroundColor: '#F2F4F8',
+                    renderTo: 'Plot Sector Strength',
+                    zoomType: 'x'
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 800
+                        },
+                    }]
+                },
+                title: {text: 'Plot Sector Strength'},
+                series: series,
+                xAxis: {
+                    events: {
+                        afterSetExtremes: this.afterSetExtremes.bind(self)
+                    },
+                    type: 'datetime',
+                    ordinal: false,
+                    labels: {
+                        format: '{value:%Y-%b-%e}'
+                    },
+                    dateTimeLabelFormats: {
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%e. %b',
+                        month: '%b \'%y',
+                        year: '%Y'
+                    }
+                }
+            };
+            this.plotSectorStrength = option;
+            self.dateTitle = new Date(res[res.length - 1].Date).toDateString();
+        }, err => {
+            alert(err);
+        });
     }
 
 

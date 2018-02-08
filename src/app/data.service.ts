@@ -82,6 +82,20 @@ export class DataService {
         return this.http.get(this.rootUrl + endPoint, {params: queryParams});
     }
 
+    getPlotSectorStrength(index, sector, from?, to?) {
+        let queryParams: HttpParams = new HttpParams();
+        queryParams = queryParams.append('index', index);
+        queryParams = queryParams.append('sector', sector);
+        if (from) {
+            queryParams = queryParams.append('from', from);
+        }
+        if (to) {
+            queryParams = queryParams.append('to', to);
+        }
+
+        return this.http.get(this.rootUrl + '/PlotSectorStrength', {params: queryParams});
+    }
+
     downloadSymbolGrid(superName, date?) {
         //  const headers = new HttpHeaders({'Content-Type': 'application/json', 'Accept': 'application/json'});
 
