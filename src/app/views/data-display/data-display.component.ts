@@ -196,7 +196,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
                         },
                     }]
                 },
-                title: {text: 'Plot Sector Strength'},
+                title: {text: `${this.selectedSector} against ${this.selectedIndex}`},
                 series: series,
                 xAxis: {
                     events: {
