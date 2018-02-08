@@ -172,6 +172,10 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
             const res: any = data;
             const self = this;
             const series: any[] = [];
+            if (!res[0]) {
+                alert('No tickers of that sector found.');
+                return;
+            }
             for (const quant of res[0].Quantities) {
                 series.push({
                     showInLegend: true,
