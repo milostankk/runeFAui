@@ -82,6 +82,15 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         window.location.href = fileUrl;
     }
 
+    downloadSectorGrid() {
+        let fileUrl = this.dataService.rootUrl + '/DownloadSectorGrid?super=' + encodeURIComponent(sessionStorage.getItem('super'));
+        const toDate = sessionStorage.getItem('to');
+        if (toDate) { // TODO
+            fileUrl += '&date=' + toDate.toString();
+        }
+        window.location.href = fileUrl;
+    }
+
     constructor(private dataService: DataService, private groupService: GroupService) {
         this.title = sessionStorage.getItem('super');
         this.mapCharts(this.endpoints);
