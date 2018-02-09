@@ -90,7 +90,7 @@
     <br>
     <div class="row" *ngIf="symbolGrid?.length">
         <div class="cold-md-12">
-            <ngx-datatable [selectionType]="'single'" [loadingIndicator]="loading" (select)="redirectToUrl($event)"
+            <ngx-datatable #tbl [selectionType]="'single'" [loadingIndicator]="loading" (select)="redirectToUrl($event)"
                            [headerHeight]="50" [rowHeight]="50" class="material" [rows]="symbolGrid">
                 <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker"></ngx-datatable-column>
                 <ngx-datatable-column prop="Name" [width]="270"></ngx-datatable-column>

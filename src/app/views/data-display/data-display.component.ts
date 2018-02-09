@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, DoCheck, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {DataService} from '../../data.service';
 import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
@@ -14,8 +14,10 @@ HighchartsOfflineExporting(Highcharts);
     templateUrl: './data-display.component.html',
     styleUrls: ['./data-display.component.scss']
 })
-export class DataDisplayComponent implements OnInit, OnDestroy {
+export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChecked {
 
+    @ViewChild ('tbl') table;
+    tableDataFound = false;
     symbolGrid: any = [];
     sectorGrid: any = [];
     selectedIndex: string;
@@ -227,6 +229,37 @@ export class DataDisplayComponent implements OnInit, OnDestroy {
         });
     }
 
+    colorTableRows(rows) {
+        const hueNum = Math.floor(rows.length / 2);
+        let minVal = Number.POSITIVE_INFINITY;
+        let maxVal = Number.NEGATIVE_INFINITY;
+        let tmp;
+        let total = 0;
+        for (let i = rows.length - 1; i >= 0; i--) {
+            total += rows[i].RelativeStrength;
+            tmp = rows[i].RelativeStrength;
+            if (tmp < minVal) { minVal = Math.round(tmp * 100) / 100}
+            if (tmp > maxVal) {maxVal = Math.round(tmp * 100) / 100}
+        }
+        const hueStep = Math.round((160 / hueNum) * 100) / 100;
+        const avg = Math.round((total / rows.length) * 100) / 100;
+        console.log(avg);
+        console.log(hueStep);
+        console.log(maxVal);
+        console.log(minVal);
+        console.log(rows);
+        console.log(hueNum);
+        console.log(total);
+    }
+
+    ngAfterContentChecked() {
+        if (!this.tableDataFound) {
+            if (this.table !== undefined) {
+                this.tableDataFound = true;
+                this.colorTableRows(this.table.rows);
+            }
+        }
+    }
 
     ngOnInit() {
     }
