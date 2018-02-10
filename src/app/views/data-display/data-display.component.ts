@@ -243,22 +243,40 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         let minVal = Number.POSITIVE_INFINITY;
         let maxVal = Number.NEGATIVE_INFINITY;
         let tmp;
-        let total = 0;
         for (let i = rows.length - 1; i >= 0; i--) {
-            total += rows[i].RelativeStrength;
             tmp = rows[i].RelativeStrength;
             if (tmp < minVal) { minVal = Math.round(tmp * 100) / 100}
             if (tmp > maxVal) {maxVal = Math.round(tmp * 100) / 100}
         }
         const hueStep = Math.round((160 / hueNum) * 100) / 100;
-        const avg = Math.round((total / rows.length) * 100) / 100;
-        console.log(avg);
-        console.log(hueStep);
-        console.log(maxVal);
-        console.log(minVal);
-        console.log(rows);
-        console.log(hueNum);
-        console.log(total);
+        const median = this.calculateMedian(rows);
+        const green = [];
+        const red = [];
+        rows.forEach(function (x) {
+            if (x.RelativeStrength >= median) {
+                green.push(x.RelativeStrength);
+            } if (x.RelativeStrength <= median) {
+                red.push(x.RelativeStrength);
+            }
+        });
+        console.log('red: ' + red);
+        console.log('green: ' + green);
+        console.log('median is: ' + median);
+        console.log('hue increment/decrement is :' + hueStep);
+        console.log('max value is: ' + maxVal);
+        console.log('min value is: ' + minVal);
+        console.log('rows: ' + rows);
+        console.log('num of shades is: ' + hueNum);
+    }
+
+     calculateMedian(rows) {
+        rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
+        const half = Math.floor(rows.length / 2);
+        if (rows.length % 2) {
+            return rows[half].RelativeStrength;
+        } else {
+            return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
+        }
     }
 
     ngAfterContentChecked() {
