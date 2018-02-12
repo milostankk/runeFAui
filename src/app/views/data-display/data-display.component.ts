@@ -239,34 +239,34 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     }
 
     colorTableRows(rows) {
-        const hueNum = Math.floor(rows.length / 2);
-        let minVal = Number.POSITIVE_INFINITY;
-        let maxVal = Number.NEGATIVE_INFINITY;
-        let tmp;
-        for (let i = rows.length - 1; i >= 0; i--) {
-            tmp = rows[i].RelativeStrength;
-            if (tmp < minVal) { minVal = Math.round(tmp * 100) / 100}
-            if (tmp > maxVal) {maxVal = Math.round(tmp * 100) / 100}
-        }
-        const hueStep = Math.round((160 / hueNum) * 100) / 100;
+        const numOfShades = Math.floor(rows.length / 2);
+        // let minVal = Number.POSITIVE_INFINITY;
+        // let maxVal = Number.NEGATIVE_INFINITY;
+        // let tmp;
+        // for (let i = rows.length - 1; i >= 0; i--) {
+        //     tmp = rows[i].RelativeStrength;
+        //     if (tmp < minVal) { minVal = Math.round(tmp * 100) / 100}
+        //     if (tmp > maxVal) {maxVal = Math.round(tmp * 100) / 100}
+        // }
+        const hueStep = Math.round((95 / numOfShades) * 100) / 100;
         const median = this.calculateMedian(rows);
         const green = [];
         const red = [];
+        let colorStart = 160;
+        let colorStart2 = 160;
         rows.forEach(function (x) {
             if (x.RelativeStrength >= median) {
-                green.push(x.RelativeStrength);
+                green.push({rs: x.RelativeStrength, rgb: {r: 0, g: Math.round(colorStart += hueStep), b: 0 }})
             } if (x.RelativeStrength <= median) {
-                red.push(x.RelativeStrength);
+                red.push({rs: x.RelativeStrength, rgb: {r: Math.round(colorStart2 += hueStep), g: 0, b: 0 }})
             }
         });
-        console.log('red: ' + red);
-        console.log('green: ' + green);
+        console.log('red: ' + red.toString());
+        console.log('green: ' + green.toString());
         console.log('median is: ' + median);
         console.log('hue increment/decrement is :' + hueStep);
-        console.log('max value is: ' + maxVal);
-        console.log('min value is: ' + minVal);
         console.log('rows: ' + rows);
-        console.log('num of shades is: ' + hueNum);
+        console.log('num of shades is: ' + numOfShades);
     }
 
      calculateMedian(rows) {
