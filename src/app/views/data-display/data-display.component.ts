@@ -239,7 +239,6 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     }
 
     colorTableRows(rows) {
-        const numOfShades = Math.floor(rows.length / 2);
         // let minVal = Number.POSITIVE_INFINITY;
         // let maxVal = Number.NEGATIVE_INFINITY;
         // let tmp;
@@ -248,12 +247,14 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         //     if (tmp < minVal) { minVal = Math.round(tmp * 100) / 100}
         //     if (tmp > maxVal) {maxVal = Math.round(tmp * 100) / 100}
         // }
-        const hueStep = Math.round((95 / numOfShades) * 100) / 100;
+        const numOfShades = Math.floor(rows.length / 2);
+        const colorScale = 95;
+        let colorStart = 160;
+        let colorStart2 = 160;
+        const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
         const median = this.calculateMedian(rows);
         const green = [];
         const red = [];
-        let colorStart = 160;
-        let colorStart2 = 160;
         rows.forEach(function (x) {
             if (x.RelativeStrength >= median) {
                 green.push({rs: x.RelativeStrength, rgb: {r: 0, g: Math.round(colorStart += hueStep), b: 0 }})
@@ -261,12 +262,12 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
                 red.push({rs: x.RelativeStrength, rgb: {r: Math.round(colorStart2 += hueStep), g: 0, b: 0 }})
             }
         });
-        console.log('red: ' + red.toString());
-        console.log('green: ' + green.toString());
-        console.log('median is: ' + median);
-        console.log('hue increment/decrement is :' + hueStep);
+        console.log('red: ' + red);
+        console.log('green: ' + green);
         console.log('rows: ' + rows);
+        console.log('median is: ' + median);
         console.log('num of shades is: ' + numOfShades);
+        console.log('hue increment/decrement is :' + hueStep);
     }
 
      calculateMedian(rows) {
