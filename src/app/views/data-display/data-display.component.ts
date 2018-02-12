@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {AfterContentChecked, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../../data.service';
 import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
@@ -27,6 +27,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     superType: string;
     title;
     dateTitle;
+    latestDateInSeries;
     highcharts;
     endpoints = [
         {endPoint: '/GetMaDigest', title: 'Diffusion 10', optional: {param: 'maLength', value: '10'}},
@@ -46,6 +47,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         }
         const data = e.target.series[0].points;
         this.dateTitle = new Date(data[data.length - 1].x).toDateString();
+        this.latestDateInSeries = new Date(data[data.length - 1].x);
         if ((e.min && e.max)) {
             let ind = 0;
             this.highcharts.charts.forEach(chart => {
@@ -75,18 +77,16 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
 
     downloadSymbolGrid() {
         let fileUrl = this.dataService.rootUrl + '/DownloadSymbolGrid?super=' + encodeURIComponent(sessionStorage.getItem('super'));
-        const toDate = sessionStorage.getItem('to');
-        if (toDate) { // TODO
-            fileUrl += '&date=' + toDate.toString();
+        if (this.latestDateInSeries) {
+            fileUrl += '&date=' + this.latestDateInSeries.toISOString();
         }
         window.location.href = fileUrl;
     }
 
     downloadSectorGrid() {
         let fileUrl = this.dataService.rootUrl + '/DownloadSectorGrid?super=' + encodeURIComponent(sessionStorage.getItem('super'));
-        const toDate = sessionStorage.getItem('to');
-        if (toDate) { // TODO
-            fileUrl += '&date=' + toDate.toString();
+        if (this.latestDateInSeries) {
+            fileUrl += '&date=' + this.latestDateInSeries.toISOString();
         }
         window.location.href = fileUrl;
     }
@@ -168,6 +168,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
                     };
                     this.options[ep.indexOf(endPoint)] = ({option: option, endpoint: endPoint});
                     self.dateTitle = new Date(res[res.length - 1].Date).toDateString();
+                    self.latestDateInSeries = new Date(res[res.length - 1].Date);
                 }, err => {
                     alert(err);
                 });
