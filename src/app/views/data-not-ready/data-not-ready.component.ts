@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-data-not-ready',
   templateUrl: './data-not-ready.component.html',

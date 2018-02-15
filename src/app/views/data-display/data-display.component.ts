@@ -29,6 +29,8 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     dateTitle;
     latestDateInSeries;
     highcharts;
+    green = [];
+    red = [];
     endpoints = [
         {endPoint: '/GetMaDigest', title: 'Diffusion 10', optional: {param: 'maLength', value: '10'}},
         {endPoint: '/GetMaDigest', title: 'Diffusion 20', optional: {param: 'maLength', value: '20'}},
@@ -254,17 +256,18 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         let colorStart2 = 160;
         const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
         const median = this.calculateMedian(rows);
-        const green = [];
-        const red = [];
+        // const green = [];
+        // const red = [];
+        const self = this;
         rows.forEach(function (x) {
             if (x.RelativeStrength >= median) {
-                green.push({rs: x.RelativeStrength, rgb: {r: 0, g: Math.round(colorStart += hueStep), b: 0 }})
+                self.green.push({ticker: x.Ticker, rs: x.RelativeStrength, rgb: {r: 0, g: Math.round(colorStart += hueStep), b: 0 }})
             } if (x.RelativeStrength <= median) {
-                red.push({rs: x.RelativeStrength, rgb: {r: Math.round(colorStart2 += hueStep), g: 0, b: 0 }})
+                self.red.push({rs: x.RelativeStrength, rgb: {r: Math.round(colorStart2 += hueStep), g: 0, b: 0 }})
             }
         });
-        console.log('red: ' + red);
-        console.log('green: ' + green);
+        console.log('red: ' + this.red);
+        console.log('green: ' + this.green);
         console.log('rows: ' + rows);
         console.log('median is: ' + median);
         console.log('num of shades is: ' + numOfShades);
