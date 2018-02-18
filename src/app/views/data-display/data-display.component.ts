@@ -62,11 +62,13 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
             });
 
             this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
-                new Date(data[data.length - 1].x).toISOString()).subscribe(sym => this.symbolGrid = sym);
+                this.latestDateInSeries.toISOString()).subscribe(sym => this.symbolGrid = sym);
+
+          //  this.table.rows = [this.symbolGrid];
 
             if (this.superType !== 'Sector') {
                 this.dataService.getSectorGrid(sessionStorage.getItem('super'),
-                    new Date(data[data.length - 1].x).toISOString()).subscribe(sym => this.sectorGrid = sym);
+                    this.latestDateInSeries.toISOString()).subscribe(sym => this.sectorGrid = sym);
             }
         }
     }
@@ -265,24 +267,53 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     //     console.log('hue increment/decrement is :' + hueStep);
     // }
 
+    // colorTableRows(rows) {
+    //     if (!rows.length) {
+    //         return
+    //     }
+    //     const numOfShades = Math.floor(rows.length / 2);
+    //     const colorScale = 95;
+    //     let colorStart = 140;
+    //     let colorStart2 = 140;
+    //     const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
+    //     const median = this.calculateMedian(rows);
+    //     const self = this;
+    //     rows.forEach(function (x) {
+    //         if (x.RelativeStrength >= median) {
+    //             x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`);
+    //         } if (x.RelativeStrength <= median) {
+    //             x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`);
+    //         }
+    //     });
+    // }
 
 
-    getRowClass = (row) => {
+    getRowClass(row) {
         if (!row.length) {
             return
         }
         const numOfShades = Math.floor(row.length / 2);
         const colorScale = 95;
-        let colorStart = 160;
-        let colorStart2 = 160;
+        let colorStart = 140;
+        let colorStart2 = 140;
         const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
-        const median = this.calculateMedian(row);
+        function getMedian(rows) {
+            rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
+            const half = Math.floor(rows.length / 2);
+            if (rows.length % 2) {
+                return rows[half].RelativeStrength;
+            } else {
+                return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
+            }
+        }
         const self = this;
+        const median = getMedian(row);
+
         row.forEach(function (x) {
             if (x.RelativeStrength >= median) {
-                x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`);
+                x['rgba'] = `rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`;
             } if (x.RelativeStrength <= median) {
-                x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`);
+                x['rgba'] = `rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`;
             }
         });
     };
@@ -302,6 +333,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
             if (this.table !== undefined) {
                 this.tableDataFound = true;
                 this.getRowClass(this.table.rows)
+              //  this.colorTableRows(this.table.rows);
             }
         }
     }

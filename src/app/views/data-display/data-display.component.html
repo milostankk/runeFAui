@@ -98,37 +98,37 @@
 
                 <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <div [style.background-color]="row.rgba">{{value}}</div>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="Name" [width]="270">
                     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-                        <div [style.background-color]="row.rgba">{{value}}</div>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value}}</div>
                     </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column prop="Sector">
+                <ngx-datatable-column prop="Sector" [width]="270">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <div [style.background-color]="row.rgba">{{value}}</div>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="RelativeStrength">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <div  [style.background-color]="row.rgba">{{value | number: '1.2-3'}}</div>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="OffensiveStrength">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <div [style.background-color]="row.rgba">{{value | number: '1.2-3'}}</div>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="DefensiveStrength">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <div [style.background-color]="row.rgba">{{value | number: '1.2-3'}}</div>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="ClosePrice">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <div [style.background-color]="row.rgba"> {{value | number: '1.2-2'}}</div>
+                        <div [ngStyle]="{'background-color' : row.rgba}"> {{value | number: '1.2-2'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
             </ngx-datatable>
