@@ -267,7 +267,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
 
 
 
-    rowClass = (row) => {
+    getRowClass = (row) => {
         if (!row.length) {
             return
         }
@@ -280,9 +280,9 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         const self = this;
         row.forEach(function (x) {
             if (x.RelativeStrength >= median) {
-                x['rgb'] = self.sanitizer.bypassSecurityTrustStyle(`rgb(0, ${Math.round(colorStart += hueStep)}, 0)`);
+                x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`);
             } if (x.RelativeStrength <= median) {
-                x['rgb'] = self.sanitizer.bypassSecurityTrustStyle(`rgb(${Math.round(colorStart2 += hueStep)}, 0, 0)`);
+                x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`);
             }
         });
     };
@@ -301,7 +301,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         if (!this.tableDataFound) {
             if (this.table !== undefined) {
                 this.tableDataFound = true;
-                this.rowClass(this.table.rows)
+                this.getRowClass(this.table.rows)
             }
         }
     }
