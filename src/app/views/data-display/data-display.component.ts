@@ -1,12 +1,10 @@
-import {
-    AfterContentChecked, Component, OnDestroy, OnInit,
-    ViewChild, ViewEncapsulation
-} from '@angular/core';
+import {AfterContentChecked, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../../data.service';
 import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
 import * as HighchartsOfflineExporting from 'highcharts-export-csv';
 import {GroupService} from '../../group.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 
 HighChartsExporting(Highcharts);
@@ -16,11 +14,10 @@ HighchartsOfflineExporting(Highcharts);
     selector: 'app-data-display',
     templateUrl: './data-display.component.html',
     styleUrls: ['./data-display.component.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChecked {
 
-    @ViewChild ('tbl') table;
+    @ViewChild('tbl') table;
     tableDataFound = false;
     symbolGrid: any = [];
     sectorGrid: any = [];
@@ -33,8 +30,6 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     dateTitle;
     latestDateInSeries;
     highcharts;
-    green = [];
-    red = [];
     endpoints = [
         {endPoint: '/GetMaDigest', title: 'Diffusion 10', optional: {param: 'maLength', value: '10'}},
         {endPoint: '/GetMaDigest', title: 'Diffusion 20', optional: {param: 'maLength', value: '20'}},
@@ -97,7 +92,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         window.location.href = fileUrl;
     }
 
-    constructor(private dataService: DataService, private groupService: GroupService) {
+    constructor(private dataService: DataService, private groupService: GroupService, private sanitizer: DomSanitizer) {
         this.title = sessionStorage.getItem('super');
         this.mapCharts(this.endpoints);
         this.superType = sessionStorage.getItem('superType') ? sessionStorage.getItem('superType') : 'Index';
@@ -272,7 +267,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
 
 
 
-    rowClass(row) {
+    rowClass = (row) => {
         if (!row.length) {
             return
         }
@@ -283,32 +278,14 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
         const median = this.calculateMedian(row);
         const self = this;
-        const coloredRows = [];
-        // row.forEach(function (x) {
-        //     if (x.RelativeStrength >= median) {
-        //         coloredRows.push({ticker: x.Ticker, rs: x.RelativeStrength, rgb: {r: 0, g: Math.round(colorStart += hueStep), b: 0 }})
-        //     } if (x.RelativeStrength <= median) {
-        //         coloredRows.push({ticker: x.Ticker, rs: x.RelativeStrength, rgb: {r: Math.round(colorStart2 += hueStep), g: 0, b: 0 }})
-        //     }
-        // });
-        for (let i = 0; i < row.length; i++) {
-            if (row[i].RelativeStrength >= median) {
-                row[i]['rgb'] = {r: 0, g: Math.round(colorStart += hueStep), b: 0 }
-            } else if (row[i].RelativeStrength <= median) {
-                row[i]['rgb'] = {r: Math.round(colorStart2 += hueStep), g: 0, b: 0 }
+        row.forEach(function (x) {
+            if (x.RelativeStrength >= median) {
+                x['rgb'] = self.sanitizer.bypassSecurityTrustStyle(`rgb(0, ${Math.round(colorStart += hueStep)}, 0)`);
+            } if (x.RelativeStrength <= median) {
+                x['rgb'] = self.sanitizer.bypassSecurityTrustStyle(`rgb(${Math.round(colorStart2 += hueStep)}, 0, 0)`);
             }
-        }
-        console.log(row)
-        // for (let i = 0; i < coloredRows.length; i++) {
-        //    // console.log(coloredRows[i].rgb);
-        //     for (let j = 0; j < row.length; j++){
-        //         if (coloredRows[i].Ticker === row[j].Ticker) {
-        //             console.log(coloredRows[i])
-        //            // return {'myClass': coloredRows[i].rgb }
-        //         }
-        //     }
-        // }
-    }
+        });
+    };
 
      calculateMedian(rows) {
         rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
@@ -324,7 +301,6 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         if (!this.tableDataFound) {
             if (this.table !== undefined) {
                 this.tableDataFound = true;
-               // this.colorTableRows(this.table.rows);
                 this.rowClass(this.table.rows)
             }
         }
@@ -332,10 +308,6 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
 
     ngOnInit() {
     }
-
-
-
-
 
     ngOnDestroy() {
         for (let ind = Highcharts.charts.length - 1; ind >= 0; ind--) {

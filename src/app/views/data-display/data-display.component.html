@@ -85,6 +85,8 @@
     <br>
     <br>
 
+
+
     <h1>{{dateTitle}}</h1>
     <button class="btn btn-primary" (click)="downloadSymbolGrid()" *ngIf="symbolGrid?.length">Download</button>
     <br>
@@ -93,31 +95,40 @@
         <div class="cold-md-12">
             <ngx-datatable #tbl [selectionType]="'single'" [loadingIndicator]="loading" (select)="redirectToUrl($event)"
                            [headerHeight]="50" [rowHeight]="50" class="material" [rows]="symbolGrid" [rowClass]="rowClass">
-                <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker"></ngx-datatable-column>
-                <ngx-datatable-column prop="Name" [width]="270"></ngx-datatable-column>
+
+                <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker">
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [style.background-color]="row.rgb">{{value}}</div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="Name" [width]="270">
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <div [style.background-color]="row.rgb">{{value}}</div>
+                    </ng-template>
+                </ngx-datatable-column>
                 <ngx-datatable-column prop="Sector">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [style.background-color]="row.rgb">{{value}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="RelativeStrength">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value | number: '1.2-3'}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div  [style.background-color]="row.rgb">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="OffensiveStrength">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value | number: '1.2-3'}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [style.background-color]="row.rgb">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="DefensiveStrength">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value | number: '1.2-3'}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [style.background-color]="row.rgb">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="ClosePrice">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value | number: '1.2-2'}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [style.background-color]="row.rgb"> {{value | number: '1.2-2'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
             </ngx-datatable>
