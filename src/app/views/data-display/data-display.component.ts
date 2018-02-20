@@ -1,10 +1,12 @@
-import {AfterContentChecked, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterContentChecked, Component, DoCheck, OnChanges, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {DataService} from '../../data.service';
 import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
 import * as HighchartsOfflineExporting from 'highcharts-export-csv';
 import {GroupService} from '../../group.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {ChangeDetectorRef} from '@angular/core';
+import {relativeTimeRounding} from "moment";
 
 
 HighChartsExporting(Highcharts);
@@ -15,7 +17,7 @@ HighchartsOfflineExporting(Highcharts);
     templateUrl: './data-display.component.html',
     styleUrls: ['./data-display.component.scss'],
 })
-export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChecked, DoCheck {
 
     @ViewChild('tbl') table;
     tableDataFound = false;
@@ -62,9 +64,9 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
             });
 
             this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
-                this.latestDateInSeries.toISOString()).subscribe(sym => this.symbolGrid = sym);
+             this.latestDateInSeries.toISOString()).subscribe(sym => this.symbolGrid = sym);
 
-          //  this.table.rows = [this.symbolGrid];
+            this.table.rows = [this.symbolGrid];
 
             if (this.superType !== 'Sector') {
                 this.dataService.getSectorGrid(sessionStorage.getItem('super'),
@@ -94,7 +96,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         window.location.href = fileUrl;
     }
 
-    constructor(private dataService: DataService, private groupService: GroupService, private sanitizer: DomSanitizer) {
+    constructor(private dataService: DataService, private groupService: GroupService) {
         this.title = sessionStorage.getItem('super');
         this.mapCharts(this.endpoints);
         this.superType = sessionStorage.getItem('superType') ? sessionStorage.getItem('superType') : 'Index';
@@ -276,17 +278,33 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     //     let colorStart = 140;
     //     let colorStart2 = 140;
     //     const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
-    //     const median = this.calculateMedian(rows);
+    //     function getMedian(rows) {
+    //         rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
+    //         const half = Math.floor(rows.length / 2);
+    //         if (rows.length % 2) {
+    //             return rows[half].RelativeStrength;
+    //         } else {
+    //             return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
+    //         }
+    //     }
     //     const self = this;
+    //     const median = getMedian(rows);
+    //
     //     rows.forEach(function (x) {
     //         if (x.RelativeStrength >= median) {
-    //             x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`);
+    //             x['rgba'] = `rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`;
     //         } if (x.RelativeStrength <= median) {
-    //             x['rgba'] = self.sanitizer.bypassSecurityTrustStyle(`rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`);
+    //             x['rgba'] = `rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`;
     //         }
     //     });
     // }
 
+    ngDoCheck() {
+        if (this.table === undefined) {
+            return;
+        }
+        this.getRowClass(this.table.rows);
+    }
 
     getRowClass(row) {
         if (!row.length) {
@@ -306,8 +324,8 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
                 return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
             }
         }
-        const self = this;
         const median = getMedian(row);
+        console.log('median is: ' + median);
 
         row.forEach(function (x) {
             if (x.RelativeStrength >= median) {
@@ -318,15 +336,15 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         });
     };
 
-     calculateMedian(rows) {
-        rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
-        const half = Math.floor(rows.length / 2);
-        if (rows.length % 2) {
-            return rows[half].RelativeStrength;
-        } else {
-            return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
-        }
-    }
+    //  calculateMedian(rows) {
+    //     rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
+    //     const half = Math.floor(rows.length / 2);
+    //     if (rows.length % 2) {
+    //         return rows[half].RelativeStrength;
+    //     } else {
+    //         return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
+    //     }
+    // }
 
     ngAfterContentChecked() {
         if (!this.tableDataFound) {
