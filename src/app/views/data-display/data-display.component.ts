@@ -1,12 +1,10 @@
-import {AfterContentChecked, Component, DoCheck, OnChanges, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {AfterContentChecked, Component, DoCheck, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../../data.service';
 import * as Highcharts from 'highcharts';
 import * as HighChartsExporting from 'highcharts-exporting';
 import * as HighchartsOfflineExporting from 'highcharts-export-csv';
 import {GroupService} from '../../group.service';
-import {DomSanitizer} from '@angular/platform-browser';
-import {ChangeDetectorRef} from '@angular/core';
-import {relativeTimeRounding} from "moment";
+
 
 
 HighChartsExporting(Highcharts);
@@ -66,7 +64,7 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
             this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
              this.latestDateInSeries.toISOString()).subscribe(sym => this.symbolGrid = sym);
 
-            this.table.rows = [this.symbolGrid];
+         //   this.table.rows = [this.symbolGrid];
 
             if (this.superType !== 'Sector') {
                 this.dataService.getSectorGrid(sessionStorage.getItem('super'),
@@ -244,60 +242,6 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         });
     }
 
-    // colorTableRows(rows) {
-    //     const numOfShades = Math.floor(rows.length / 2);
-    //     const colorScale = 95;
-    //     let colorStart = 160;
-    //     let colorStart2 = 160;
-    //     const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
-    //     const median = this.calculateMedian(rows);
-    //     // const green = [];
-    //     // const red = [];
-    //     const self = this;
-    //     rows.forEach(function (x) {
-    //         if (x.RelativeStrength >= median) {
-    //             self.green.push({ticker: x.Ticker, rs: x.RelativeStrength, rgb: {r: 0, g: Math.round(colorStart += hueStep), b: 0 }})
-    //         } if (x.RelativeStrength <= median) {
-    //             self.red.push({ticker: x.Ticker, rs: x.RelativeStrength, rgb: {r: Math.round(colorStart2 += hueStep), g: 0, b: 0 }})
-    //         }
-    //     });
-    //     console.log('red: ' + this.red);
-    //     console.log('green: ' + this.green);
-    //     console.log('rows: ' + rows);
-    //     console.log('median is: ' + median);
-    //     console.log('num of shades is: ' + numOfShades);
-    //     console.log('hue increment/decrement is :' + hueStep);
-    // }
-
-    // colorTableRows(rows) {
-    //     if (!rows.length) {
-    //         return
-    //     }
-    //     const numOfShades = Math.floor(rows.length / 2);
-    //     const colorScale = 95;
-    //     let colorStart = 140;
-    //     let colorStart2 = 140;
-    //     const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
-    //     function getMedian(rows) {
-    //         rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
-    //         const half = Math.floor(rows.length / 2);
-    //         if (rows.length % 2) {
-    //             return rows[half].RelativeStrength;
-    //         } else {
-    //             return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
-    //         }
-    //     }
-    //     const self = this;
-    //     const median = getMedian(rows);
-    //
-    //     rows.forEach(function (x) {
-    //         if (x.RelativeStrength >= median) {
-    //             x['rgba'] = `rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`;
-    //         } if (x.RelativeStrength <= median) {
-    //             x['rgba'] = `rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`;
-    //         }
-    //     });
-    // }
 
     ngDoCheck() {
         if (this.table === undefined) {
@@ -311,16 +255,12 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
             return
         }
         const numOfShades = Math.floor(row.length / 2);
-        const colorScale = 95;
-      //  let colorStartGreen = 140;
-      //  let colorStartRed = 140;
         let greenStart = 0;
         let redStart = 255;
         const redScale = 255;
         const greenScale = 160;
         const greenStep = Math.round((greenScale / numOfShades) * 100) / 100;
         const redStep = Math.round((redScale / numOfShades) * 100) / 100;
-     //   const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
         function getMedian(rows) {
             rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
             const half = Math.floor(rows.length / 2);
@@ -340,22 +280,11 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         });
     };
 
-    //  calculateMedian(rows) {
-    //     rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
-    //     const half = Math.floor(rows.length / 2);
-    //     if (rows.length % 2) {
-    //         return rows[half].RelativeStrength;
-    //     } else {
-    //         return (rows[half - 1].RelativeStrength + rows[half].RelativeStrength) / 2.0;
-    //     }
-    // }
-
     ngAfterContentChecked() {
         if (!this.tableDataFound) {
             if (this.table !== undefined) {
                 this.tableDataFound = true;
                 this.getRowClass(this.table.rows)
-              //  this.colorTableRows(this.table.rows);
             }
         }
     }
