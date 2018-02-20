@@ -312,9 +312,15 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
         }
         const numOfShades = Math.floor(row.length / 2);
         const colorScale = 95;
-        let colorStart = 140;
-        let colorStart2 = 140;
-        const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
+      //  let colorStartGreen = 140;
+      //  let colorStartRed = 140;
+        let greenStart = 0;
+        let redStart = 255;
+        const redScale = 255;
+        const greenScale = 160;
+        const greenStep = Math.round((greenScale / numOfShades) * 100) / 100;
+        const redStep = Math.round((redScale / numOfShades) * 100) / 100;
+     //   const hueStep = Math.round((colorScale / numOfShades) * 100) / 100;
         function getMedian(rows) {
             rows.sort( function(a, b) {return a.RelativeStrength - b.RelativeStrength} );
             const half = Math.floor(rows.length / 2);
@@ -325,13 +331,11 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
             }
         }
         const median = getMedian(row);
-        console.log('median is: ' + median);
-
         row.forEach(function (x) {
             if (x.RelativeStrength >= median) {
-                x['rgba'] = `rgba(0, ${Math.round(colorStart += hueStep)}, 0, 1)`;
+                x['rgba'] = `rgba(${Math.round(redStart -= redStep)}, 230 , 105, 1)`;
             } if (x.RelativeStrength <= median) {
-                x['rgba'] = `rgba(${Math.round(colorStart2 += hueStep)}, 0, 0, 1)`;
+                x['rgba'] = `rgba(255, ${Math.round(greenStart += greenStep)}, 0, 1)`;
             }
         });
     };
