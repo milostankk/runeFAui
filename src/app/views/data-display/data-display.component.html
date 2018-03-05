@@ -59,22 +59,26 @@
     <button class="btn btn-primary" (click)="downloadSectorGrid()" *ngIf="sectorGrid?.length">Download</button>
     <div class="row" *ngIf="sectorGrid?.length">
         <div class="col-12">
-            <ngx-datatable [selectionType]="'single'" [loadingIndicator]="loading"
-                           [headerHeight]="50" [rowHeight]="50" class="material" [rows]="sectorGrid">
-                <ngx-datatable-column prop="Sector" [width]="270"></ngx-datatable-column>
+            <ngx-datatable #tblSector [selectionType]="'single'" [loadingIndicator]="loading"
+                           [headerHeight]="50" [rowHeight]="50" class="material" [rows]="sectorGrid" [rowClass]="getRowClass">
+                <ngx-datatable-column prop="Sector" [width]="270">
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value}}</div>
+                    </ng-template>
+                </ngx-datatable-column>
                 <ngx-datatable-column prop="RelativeStrength">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value | number: '1.2-3'}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="OffensiveStrength">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value | number: '1.2-3'}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column prop="DefensiveStrength">
-                    <ng-template let-value="value" ngx-datatable-cell-template>
-                        {{value | number: '1.2-3'}}
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div [ngStyle]="{'background-color' : row.rgba}">{{value | number: '1.2-3'}}</div>
                     </ng-template>
                 </ngx-datatable-column>
             </ngx-datatable>
@@ -93,7 +97,7 @@
     <br>
     <div class="row" *ngIf="symbolGrid?.length">
         <div class="cold-md-12">
-            <ngx-datatable #tbl [selectionType]="'single'" [loadingIndicator]="loading" (select)="redirectToUrl($event)"
+            <ngx-datatable #tblSymbol [selectionType]="'single'" [loadingIndicator]="loading" (select)="redirectToUrl($event)"
                            [headerHeight]="50" [rowHeight]="50" class="material" [rows]="symbolGrid" [rowClass]="getRowClass">
 
                 <ngx-datatable-column (activate)="redirectToUrl($event)" prop="Ticker">

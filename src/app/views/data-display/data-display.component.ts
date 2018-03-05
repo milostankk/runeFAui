@@ -17,7 +17,8 @@ HighchartsOfflineExporting(Highcharts);
 })
 export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChecked, DoCheck {
 
-    @ViewChild('tbl') table;
+    @ViewChild('tblSymbol') tableSymbol;
+    @ViewChild('tblSector') tableSector;
     tableDataFound = false;
     symbolGrid: any = [];
     sectorGrid: any = [];
@@ -61,10 +62,10 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
                 ind++;
             });
 
+
             this.dataService.getSymbolGrid(sessionStorage.getItem('super'),
              this.latestDateInSeries.toISOString()).subscribe(sym => this.symbolGrid = sym);
 
-         //   this.table.rows = [this.symbolGrid];
 
             if (this.superType !== 'Sector') {
                 this.dataService.getSectorGrid(sessionStorage.getItem('super'),
@@ -244,10 +245,12 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
 
 
     ngDoCheck() {
-        if (this.table === undefined) {
-            return;
+        if (this.tableSymbol !== undefined) {
+            this.getRowClass(this.tableSymbol.rows);
         }
-        this.getRowClass(this.table.rows);
+        if (this.tableSector !== undefined) {
+            this.getRowClass(this.tableSector.rows);
+        }
     }
 
     getRowClass(row) {
@@ -281,12 +284,12 @@ export class DataDisplayComponent implements OnInit, OnDestroy, AfterContentChec
     };
 
     ngAfterContentChecked() {
-        if (!this.tableDataFound) {
-            if (this.table !== undefined) {
-                this.tableDataFound = true;
-                this.getRowClass(this.table.rows)
-            }
-        }
+        // if (!this.tableDataFound) {
+        //     if (this.table !== undefined) {
+        //         this.tableDataFound = true;
+        //         this.getRowClass(this.table.rows)
+        //     }
+        // }
     }
 
     ngOnInit() {
